@@ -1,11 +1,5 @@
 \begin{thebibliography}{}
 
-\bibitem[\protect\citeauthoryear{Fisheries and Oceans
-  Canada}{end}{2009}]{endeavourMPAPlan}
- (2009).
-\newblock Endeavour hydrothermal vents marine protected area management plan
-  2010-2015.
-
 \bibitem[\protect\citeauthoryear{Badrinarayanan, Kendall, and
   Cipolla}{Badrinarayanan et~al.}{2015}]{BadrinarayananK15}
 Badrinarayanan, V., A.~Kendall, and R.~Cipolla (2015).
@@ -71,6 +65,15 @@ Blei, D.~M. and M.~I. Jordan (2003).
 \newblock In {\em Proceedings of the 26th Annual International ACM SIGIR
   Conference on Research and Development in Informaion Retrieval}, SIGIR '03,
   New York, NY, USA, pp.\  127--134. ACM.
+
+\bibitem[\protect\citeauthoryear{{Department of Fisheries and Oceans
+  Canada}}{{Department of Fisheries and Oceans
+  Canada}}{2009}]{endeavourMPAPlan}
+{Department of Fisheries and Oceans Canada} (2009).
+\newblock Endeavour hydrothermal vents marine protected area management plan
+  2010-2015.
+\newblock Available online at
+  \url{http://publications.gc.ca/pub?id=9.694447&sl=0}.
 
 \bibitem[\protect\citeauthoryear{Douglas, Juniper, Jenkyns, Hoeberechts,
   Macoun, and Hillier}{Douglas et~al.}{2017}]{Douglas2017}
