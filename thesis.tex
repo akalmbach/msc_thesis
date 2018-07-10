@@ -1,0 +1,110 @@
+\documentclass[12pt,Bold,letterpaper,TexShade]{mcgilletdclass}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfig}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[labelformat=simple]{caption}
+\usepackage[dvips]{geometry}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{siunitx}
+\usepackage{appendix}
+\usepackage{hyperref}
+\usepackage{natbib}
+
+\usepackage{todonotes}
+
+% \renewcommand\thesubfigure{\alph{subfigure})}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Have you configured your TeX system for proper  %%
+%% page alignment? See the McGillETD documentation %%
+%% for two methods that can be used to control     %%
+%% page alignment. One method is demonstrated      %%
+%% below. See documentation and the ufalign.tex    %%
+%% file for instructions on how to adjust these    %%
+%% parameters.                                     %%
+\addtolength{\hoffset}{0pt}                        %%
+\addtolength{\voffset}{0pt}                        %%
+%%                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%       Define student-specific info
+\SetTitle{\huge{Unsupervised Learning of Interpretable Models for Sparse, Smooth Data}}%
+\SetAuthor{Arnold Kalmbach}%
+\SetDegreeType{Master of Computer Science (Thesis)}%
+\SetDepartment{Department of Computer Science}%
+\SetUniversity{McGill University}%
+\SetUniversityAddr{Montreal, Quebec}%
+\SetThesisDate{\today}%
+\SetRequirements{A thesis submitted to McGill University in partial fulfillment of requirements for
+the degree of Master of Computer Science}%
+\SetCopyright{\copyright{Arnold Kalmbach, 2018}}%
+
+% \makeindex[keylist]
+% \makeindex[abbr]
+
+%% Input any special commands below
+%\newcommand{\Kron}[1]{\ensuremath{\delta_{K}\left(#1\right)}}
+\listfiles%
+\begin{document}
+
+\maketitle%
+
+\begin{romanPagenumber}{2}%
+\SetDedicationName{DEDICATION}%
+\SetDedicationText{TODO TODO TODO}%
+\Dedication%
+
+\SetAcknowledgeName{ACKNOWLEDGEMENTS}%
+\SetAcknowledgeText{TODO TODO TODO}%
+\Acknowledge%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%         English Abstract                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SetAbstractEnName{ABSTRACT}%
+\SetAbstractEnText{TODO TODO TODO}
+\AbstractEn%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%         French Abstract                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SetAbstractFrName{ABR\'{E}G\'{E}}%
+\SetAbstractFrText{TODO TODO TODO}%
+\AbstractFr%
+
+\TOCHeading{TABLE OF CONTENTS}%
+\LOTHeading{LIST OF TABLES}%
+\LOFHeading{LIST OF FIGURES}%
+
+\tableofcontents %
+\listoftables %
+\listoffigures %
+
+\end{romanPagenumber} 
+
+%\mainmatter %
+\include{intro}
+\include{topic_model}
+\include{classification}
+\include{plankton}
+\include{ptz}
+\include{conclusion}
+\include{appendices}
+
+\bibliographystyle{chicagoa}
+\bibHeading{References}
+\bibliography{thesis}
+
+%\index[abbr]{IEEE@IEEE: Institute of Electrical and Electronics Engineers, Inc.}
+%\index[abbr]{CDMA@CDMA: code-division multiple access}
+%\index[abbr]{CTAN@CTAN: comprehensive \protect\TeX{} archive network}
+
+%\printindex[keylist]{Index}{Index}{}
+%\printindex[abbr]{KEY TO ABBREVIATIONS}{KEY TO ABBREVIATIONS}{}
+
+\end{document}
