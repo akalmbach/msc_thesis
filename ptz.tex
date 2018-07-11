@@ -113,7 +113,7 @@ We choose a spatio-temporal topic model with $K = 25$ topics and neighborhoods o
 
 Since we aim to demonstrate a real-time system that can learn about its surroundings relatively quickly, we stop learning after 50 observations. As a first inquiry into what the model has learned, we directly decode the MAP topic distributions $\hat{\Phi}$ by passing them through the CIB-AE decoder (See Figs.~\ref{fig:pano-7-topics},\ref{fig:pano-15-topics},\ref{fig:pano-24-topics}). Most other applications of visual topic models employ non-invertible feature functions and choose to inspect topics by looking at the most representative training images. To our knowledge, this is the first application of a visual topic model where the topics can be fully decoded and inspected directly as images.
 
-In addition, prediction with our spatial topic prior model is extremely efficient, and we are able to predict the topic priors for 10,000 random $P,T,Z$ views. In Figs.~\ref{fig:pano-7-map}, ~\ref{fig:pano-15-map}, and ~\ref{fig:pano-24-map} we present the resulting topic prior maps (one scatter plot per topic, in the same arrangement as the topic images), wtheith the point omitted for topic $k$ if $\theta(x)_k < 0.01$, blue indicating $\theta(x)_k = 0.01$ and red $\theta(x)_k = 1$. Together, the decoded topics and view-topic maps provide an evocative graphical representation of how low-level textures combine into a higher level scene structure.
+In addition, prediction with our spatial topic prior model is extremely efficient, so we are able to predict the topic priors for 10,000 random $P,T,Z$ views. In Figs.~\ref{fig:pano-7-map}, ~\ref{fig:pano-15-map}, and ~\ref{fig:pano-24-map} we present the resulting topic prior maps (one scatter plot per topic, in the same arrangement as the topic images), with the point $x_i$ omitted for topic $k$ if $\theta(x_i)_k < 0.01$, blue indicating $\theta(x)_k = 0.01$ and red $\theta(x)_k = 1$. Together, the decoded topics and view-topic maps provide an evocative graphical representation of how low-level textures combine into a higher level scene structure. After training, we collected 50 more views along with their inferred MAP topic priors (without performing any more refinement of $\Phi$). Among these observed views for each of the 35 test panoramas, we found $D_{JS}[\theta(x), \hat{\theta}]$ to be 0.2953 nats, while $D_{JS}[\mathrm{Unif}(K), \hat{\theta}]$ was on average 0.4122 nats\footnote{Recall $0 \leq D_{JS} \leq \ln(2) \approx 0.6931$}. This indicates that the topic mapping procedure is imperfect as is expected because of its weak geometric assumptions, nevertheless that it is better than a trivial strategy.
 
 \begin{figure}{}{}
     \begin{minipage}{0.55\textwidth}
@@ -181,8 +181,29 @@ In addition, prediction with our spatial topic prior model is extremely efficien
     \label{fig:pano-24}
 \end{figure}
 
+In addition to decoding the topic distributions themselves, we can predict the topic prior for a view and the corresponding encoding distribution given the topic distributions, and decode these predicted encodings. We evaluate our system based on the root mean squared error pixel value between the predictions. We call views that where we have run topic inference and topic map training but not topic refinement `observed'. At observed views our model predicts exactly the topic prior observed in that location, and so is able to represent the information encoded in the topic model without external loss.
 
-In addition to decoding the topic distributions themselves, we can predict the topic prior for a view and the corresponding encoding distribution given the topic distributions, and decode these predicted encodings. Note that at training views, our model predicts exactly the topic prior observed in that location, and so is able to represent the information encoded in the topic model without external loss. Fig.~\ref{fig:vs_vqvae} shows the root mean squared error for observed topic encodings and predicted topic priors compared to the real images at the corresponding views.
+As performance baselines, we trained two additional autoencoders with similarly constrained latent spaces offline, on the SUN360/street training set used to train the CIB-AE. First, we trained a plain CAE, without a categorical distribution latent space or additional loss terms beyond the MSE. We copy the architecture of the CIB-AE up to the softmax layer, and then add 3 additional fully connected layers of sizes 4096, 2048, and 1024, with ReLU and BatchNorm nonlinearities and with a final latent representation of 25 dimensions to complete the encoder. As with CIB-AE, the decoder is symmetric with the encoder. We initialilzed the weights of the encoder by copying them from the pretrained CIB-AE where possible, and trained the CAE using the same procedure as the CIB-AE.
+
+In addition, we trained a Vector-Quantized Variational Autoencoder (VQ-VAE, \citep{vqvae2017}) with a codebook of size $25 \times 8192$, identical to the topic model. VQ-VAE is a state of the art autoencoder model. Its architecture preserves more structure, with codes representing a spatial resolution of $32 \times 32$ instead of $4 \times 4$ as in our features. \todo[inline]{finish this paragraph}
+
+Fig.~\ref{fig:vs_vqvae} shows the root mean squared error for observed topic encodings and predicted topic priors compared to the real images at the corresponding views.
+
+\begin{figure}
+    \begin{center}
+    \subfloat[]{
+        \includegraphics[width=0.89\columnwidth]{figures/ptz/train_stacked_intext}
+        \label{fig:encoding-obs-strip}
+    }\\
+    \subfloat[]{
+        \includegraphics[width=0.89\columnwidth]{figures/ptz/test_stacked_intext}
+        \label{fig:encoding-pred-strip}
+    }
+    \end{center}
+    \caption{Observed \protect\subref{fig:encoding-obs-strip} and predicted encodings \protect\subref{fig:encoding-pred-strip} for random views from SUN360/street. From left to right the columns represent true image, CIB-AE autoencoding, topic prediction autoencoding, VQ-VAE latent prediction autoencoding, and plain CAE autoencoding. Many more examples are found in App.~\ref{ch:app_predictions}).
+    }
+    \label{fig:encoding-strip}
+\end{figure}
 
 \begin{figure}
     \begin{center}
@@ -202,9 +223,6 @@ In addition to decoding the topic distributions themselves, we can predict the t
     }
     \label{fig:vs_vqvae}
 \end{figure}
-
-\citep{vqvae2017}
-
 
 \subsection{Visual topic-mixture search}
 
