@@ -105,13 +105,17 @@ Our approach delegates learning the globally-salient image embedding to the CIB-
     \label{fig:cibae_encodings}
 \end{figure}
 
-Given the trained CIB-AE and a test environment, we train a spatio-temporal topic model with $K = 25$ topics, and neighborhoods of size 10 deg $\times$ 20 deg $\times$ 6 (tilt $\times$ pan $\times$ zoom). This neighborhood size choice corresponds to the intuition that environments are semantically `smoother' in tilt than pan, and much smoother while zooming than moving the camera. We chose concentration parameter values $\alpha = 0.2, \beta = 0.2$. We performed extensive cross validation on these parameter values and certain other choices were found to be good for particular environments, however we found that on average over a validation set of 20 environments these parameters gave the best performance.
+We train our view-predictor by alternating between observing new encoding distributions and refining a spatio-temporal topic model for a fixed period of 1 second. At the end of each refinement phase the spatial topic map is refit using normalized pan, tilt, and zoom-factor spatial coordinates and the corresponding MAP topic priors. Then, the partially trained spatial topic-prior map can be used to select the next training view (discussed in Sec.~\ref{sec:active-learning}) or it can be chosen uniformly at random.
 
-We train the topic model at 0.5 hz, alternating randomly selecting a view, projecting its image and extracting its encoding distribution with refining the topic model. At the end of each refinement phase we fit the topic map described above to all of the previously observed pose, topic prior pairs. Similar to Ch.~\ref{ch:plankton}, we predict the encoding distribution for a new view x by first predicting the topic prior $ \hat{\theta} = \theta (x)$, and then taking the product with the MAP topic distribution matrix $ \hat{\theta} \Phi$.
+When the image corresponding to the new view is extracted its word distribution is computed based on our trained CIB-AE. Because our Gibbs sampling inference method samples from the posterior for the topic assignment of a single word given all the others, it is necessary to discretize the encoding distribution rather than work with it directly. Note that despite an encoding dimension of 8192, it is possible to use a relatively small number of discrete observations without losing detail because individual images have low entropy encodings. In our experiments we define a constant document size of 2000 words; initial experimentation showed some degradation of performance below this level and little improvement above, however clearly the document size defines a tradeoff between the required number of sampling iterations and the amount of detail modelled.
 
-\citep{vqvae2017}
+We choose a spatio-temporal topic model with $K = 25$ topics and neighborhoods of size 10 deg $\times$ 20 deg $\times$ 6 (tilt $\times$ pan $\times$ zoom). This neighborhood size choice corresponds to the intuition that environments are semantically `smoother' in tilt than pan, and much smoother while zooming than moving the camera. We chose concentration parameter values $\alpha = 0.2, \beta = 0.2$. We performed extensive cross validation to select these hyerparameter values values and certain other choices were found to perform much better for particular environments, however we did not find a combination of hyperparemeter values that was definitively much more performant than the others on average.
 
-\begin{figure}
+Since we aim to demonstrate a real-time system that can learn about its surroundings relatively quickly, we stop learning after 50 observations. As a first inquiry into what the model has learned, we directly decode the MAP topic distributions $\hat{\Phi}$ by passing them through the CIB-AE decoder (See Figs.~\ref{fig:pano-7-topics},\ref{fig:pano-15-topics},\ref{fig:pano-24-topics}). Most other applications of visual topic models employ non-invertible feature functions and choose to inspect topics by looking at the most representative training images. To our knowledge, this is the first application of a visual topic model where the topics can be fully decoded and inspected directly as images.
+
+In addition, prediction with our spatial topic prior model is extremely efficient, and we are able to predict the topic priors for 10,000 random $P,T,Z$ views. In Figs.~\ref{fig:pano-7-map}, ~\ref{fig:pano-15-map}, and ~\ref{fig:pano-24-map} we present the resulting topic prior maps (one scatter plot per topic, in the same arrangement as the topic images), wtheith the point omitted for topic $k$ if $\theta(x)_k < 0.01$, blue indicating $\theta(x)_k = 0.01$ and red $\theta(x)_k = 1$. Together, the decoded topics and view-topic maps provide an evocative graphical representation of how low-level textures combine into a higher level scene structure.
+
+\begin{figure}{}{}
     \begin{minipage}{0.55\textwidth}
         \subfloat[][]{
             \includegraphics[width=\columnwidth]{figures/ptz/pano_7_topics.png}
@@ -119,7 +123,7 @@ We train the topic model at 0.5 hz, alternating randomly selecting a view, proje
         }
     \end{minipage} \hfill
     \begin{minipage}{0.44\textwidth}
-        \subfloat[][]{
+        \subfloat[][]{{}
             \includegraphics[width=\columnwidth]{figures/ptz/pano_7_map.png}
             \label{fig:pano-7-map}
         } \\
@@ -178,6 +182,8 @@ We train the topic model at 0.5 hz, alternating randomly selecting a view, proje
 \end{figure}
 
 
+In addition to decoding the topic distributions themselves, we can predict the topic prior for a view and the corresponding encoding distribution given the topic distributions, and decode these predicted encodings. Note that at training views, our model predicts exactly the topic prior observed in that location, and so is able to represent the information encoded in the topic model without external loss. Fig.~\ref{fig:vs_vqvae} shows the root mean squared error for observed topic encodings and predicted topic priors compared to the real images at the corresponding views.
+
 \begin{figure}
     \begin{center}
     \subfloat[]{
@@ -197,9 +203,13 @@ We train the topic model at 0.5 hz, alternating randomly selecting a view, proje
     \label{fig:vs_vqvae}
 \end{figure}
 
+\citep{vqvae2017}
+
+
 \subsection{Visual topic-mixture search}
 
 \section{Discussion}
+\subsection{Active learning}\label{sec:active-learning}
 Active learning \citep{Jayaraman2017}
 
 
