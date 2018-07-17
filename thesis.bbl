@@ -1,5 +1,14 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Agustsson, Mentzer, Tschannen, Cavigelli,
+  Timofte, Benini, and Gool}{Agustsson et~al.}{2017}]{AgustssonSoftToHardVQ}
+Agustsson, E., F.~Mentzer, M.~Tschannen, L.~Cavigelli, R.~Timofte, L.~Benini,
+  and L.~V. Gool (2017).
+\newblock Soft-to-hard vector quantization for end-to-end learned compression
+  of images and neural networks.
+\newblock {\em CoRR\/}~{\em abs/1704.00648}.
+
+
 \bibitem[\protect\citeauthoryear{Badrinarayanan, Kendall, and
   Cipolla}{Badrinarayanan et~al.}{2015}]{BadrinarayananK15}
 Badrinarayanan, V., A.~Kendall, and R.~Cipolla (2015).
@@ -8,153 +17,21 @@ Badrinarayanan, V., A.~Kendall, and R.~Cipolla (2015).
 \newblock {\em CoRR\/}~{\em abs/1511.00561}.
 
 
-\bibitem[\protect\citeauthoryear{Bart, Welling, and Perona}{Bart
-  et~al.}{2011}]{bart2011}
-Bart, E., M.~Welling, and P.~Perona (2011, Nov).
-\newblock Unsupervised organization of image collections: Taxonomies and
-  beyond.
-\newblock {\em IEEE Transactions on Pattern Analysis and Machine
-  Intelligence\/}~{\em 33\/}(11), 2302--2315.
+\bibitem[\protect\citeauthoryear{Chen, Kingma, Salimans, Duan, Dhariwal,
+  Schulman, Sutskever, and Abbeel}{Chen et~al.}{2016}]{Chen2016}
+Chen, X., D.~P. Kingma, T.~Salimans, Y.~Duan, P.~Dhariwal, J.~Schulman,
+  I.~Sutskever, and P.~Abbeel (2016).
+\newblock Variational lossy autoencoder.
+\newblock {\em CoRR\/}~{\em abs/1611.02731}.
 
 
-\bibitem[\protect\citeauthoryear{Bengio, Courville, and Vincent}{Bengio
-  et~al.}{2013}]{Bengio2013}
-Bengio, Y., A.~Courville, and P.~Vincent (2013, Aug).
-\newblock Representation learning: A review and new perspectives.
-\newblock {\em IEEE Transactions on Pattern Analysis and Machine
-  Intelligence\/}~{\em 35\/}(8), 1798--1828.
-
-
-\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{2006a}]{BishopCh9}
-Bishop, C. (2006a).
-\newblock {\em Pattern Recognition and Machine Learning (Information Science
-  and Statistics)}, Chapter~9, pp.\  423--460.
-\newblock Berlin, Heidelberg: Springer-Verlag.
-
-\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{2006b}]{BishopCh2}
-Bishop, C. (2006b).
-\newblock {\em Pattern Recognition and Machine Learning (Information Science
-  and Statistics)}, Chapter 2.2, pp.\  423--460.
-\newblock Berlin, Heidelberg: Springer-Verlag.
-
-\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{1999}]{Bishop1999}
-Bishop, C.~M. (1999).
-\newblock {Variational principal components}.
-\newblock {\em 9th International Conference on Artificial Neural Networks ICANN
-  99\/}~{\em 1999\/}(470), 509--514.
-
-
-\bibitem[\protect\citeauthoryear{Blei, Carin, and Dunson}{Blei
-  et~al.}{2010}]{Blei2010}
-Blei, D., L.~Carin, and D.~Dunson (2010, Nov).
-\newblock Probabilistic topic models.
-\newblock {\em IEEE Signal Processing Magazine\/}~{\em 27\/}(6), 55--65.
-
-
-\bibitem[\protect\citeauthoryear{Blei, Ng, and {and M. Jordan}}{Blei
-  et~al.}{2003}]{Blei2003}
-Blei, D., A.~Ng, and {and M. Jordan} (2003).
-\newblock {Latent Dirichlet Allocation}.
-\newblock {\em Jmlr\/}~{\em 3}, 993--1022.
-
-
-\bibitem[\protect\citeauthoryear{Blei and Jordan}{Blei and
-  Jordan}{2003}]{Blei2003Captions}
-Blei, D.~M. and M.~I. Jordan (2003).
-\newblock Modeling annotated data.
-\newblock In {\em Proceedings of the 26th Annual International ACM SIGIR
-  Conference on Research and Development in Informaion Retrieval}, SIGIR '03,
-  New York, NY, USA, pp.\  127--134. ACM.
-
-\bibitem[\protect\citeauthoryear{{Department of Fisheries and Oceans
-  Canada}}{{Department of Fisheries and Oceans
-  Canada}}{2009}]{endeavourMPAPlan}
-{Department of Fisheries and Oceans Canada} (2009).
-\newblock Endeavour hydrothermal vents marine protected area management plan
-  2010-2015.
-\newblock Available online at
-  \url{http://publications.gc.ca/pub?id=9.694447&sl=0}.
-
-\bibitem[\protect\citeauthoryear{Douglas, Juniper, Jenkyns, Hoeberechts,
-  Macoun, and Hillier}{Douglas et~al.}{2017}]{Douglas2017}
-Douglas, K., S.~K. Juniper, R.~Jenkyns, M.~Hoeberechts, P.~Macoun, and
-  J.~Hillier (2017, Sept).
-\newblock Developing spatial management tools for offshore marine protected
-  areas.
-\newblock In {\em OCEANS 2017 - Anchorage}, pp.\  1--7.
-
-\bibitem[\protect\citeauthoryear{Fei-Fei and Perona}{Fei-Fei and
-  Perona}{2005}]{FeiFei2005}
-Fei-Fei, L. and P.~Perona (2005, June).
-\newblock A bayesian hierarchical model for learning natural scene categories.
-\newblock In {\em 2005 IEEE Computer Society Conference on Computer Vision and
-  Pattern Recognition (CVPR'05)}, Volume~2, pp.\  524--531 vol. 2.
-
-\bibitem[\protect\citeauthoryear{Geigle}{Geigle}{2016}]{geigle2016}
-Geigle, C. (2016, October).
-\newblock Inference methods for latent dirichlet allocation.
-\newblock Course notes (cs598cxz advanced topics in information retrieval),
-  Department of Computer Science, University of Illinois at Urbana-Champaign.
-
-\bibitem[\protect\citeauthoryear{Girdhar}{Girdhar}{2014}]{Girdhar2014}
-Girdhar, Y. (2014).
-\newblock {\em {Unsupervised Semantic Perception, Summarization, and Autonomous
-  Exploration for Robots in Unstructured Environments}}.
-\newblock Ph.\ D. thesis, McGill University.
-
-\bibitem[\protect\citeauthoryear{Girdhar}{Girdhar}{2016}]{Girdhar2016}
-Girdhar, Y. (2016).
-\newblock {Modeling curiosity in a mobile robot for long-term autonomous
-  exploration and monitoring}.
-\newblock {\em Autonomous Robots\/}~{\em 40\/}(7), 1267--1278.
-
-
-\bibitem[\protect\citeauthoryear{Girdhar and Dudek}{Girdhar and
-  Dudek}{2012}]{Girdhar2012}
-Girdhar, Y. and G.~Dudek (2012).
-\newblock {Efficient on-line data summarization using extremum summaries}.
-\newblock {\em Proceedings - IEEE International Conference on Robotics and
-  Automation\/}, 3490--3496.
-
-
-\bibitem[\protect\citeauthoryear{Girdhar, Whitney, and Dudek}{Girdhar
-  et~al.}{2014}]{Girdhar2014a}
-Girdhar, Y., D.~Whitney, and G.~Dudek (2014).
-\newblock {Curiosity based exploration for learning terrain models}.
-\newblock {\em 2014 IEEE International Conference on Robotics and
-  Automation\/}, 578--584.
-
-
-\bibitem[\protect\citeauthoryear{Goodfellow, Pouget-Abadie, Mirza, Xu,
-  Warde-Farley, Ozair, Courville, and Bengio}{Goodfellow
-  et~al.}{2014}]{Goodfellow2014}
-Goodfellow, I., J.~Pouget-Abadie, M.~Mirza, B.~Xu, D.~Warde-Farley, S.~Ozair,
-  A.~Courville, and Y.~Bengio (2014).
-\newblock Generative adversarial nets.
-\newblock In Z.~Ghahramani, M.~Welling, C.~Cortes, N.~D. Lawrence, and K.~Q.
-  Weinberger (Eds.), {\em Advances in Neural Information Processing Systems
-  27}, pp.\  2672--2680. Curran Associates, Inc.
-
-\bibitem[\protect\citeauthoryear{Griffiths and Steyvers}{Griffiths and
-  Steyvers}{2004}]{griffiths2004}
-Griffiths, T.~L. and M.~Steyvers (2004).
-\newblock Finding scientific topics.
-\newblock {\em Proceedings of the National academy of Sciences\/}~{\em
-  101\/}(suppl 1), 5228--5235.
-
-
-\bibitem[\protect\citeauthoryear{Hofmann}{Hofmann}{2000}]{Hofmann2000}
-Hofmann, T. (2000).
-\newblock Learning the similarity of documents: An information-geometric
-  approach to document retrieval and categorization.
-\newblock In S.~A. Solla, T.~K. Leen, and K.~M\"{u}ller (Eds.), {\em Advances
-  in Neural Information Processing Systems 12}, pp.\  914--920. MIT Press.
-
-\bibitem[\protect\citeauthoryear{Hofmann}{Hofmann}{2001}]{Hofmann2001}
-Hofmann, T. (2001, Jan).
-\newblock Unsupervised learning by probabilistic latent semantic analysis.
-\newblock {\em Machine Learning\/}~{\em 42\/}(1), 177--196.
-
+\bibitem[\protect\citeauthoryear{Gregor, Besse, Jimenez~Rezende, Danihelka, and
+  Wierstra}{Gregor et~al.}{2016}]{Gregor2016}
+Gregor, K., F.~Besse, D.~Jimenez~Rezende, I.~Danihelka, and D.~Wierstra (2016).
+\newblock Towards conceptual compression.
+\newblock In D.~D. Lee, M.~Sugiyama, U.~V. Luxburg, I.~Guyon, and R.~Garnett
+  (Eds.), {\em Advances in Neural Information Processing Systems 29}, pp.\
+  3549--3557. Curran Associates, Inc.
 
 \bibitem[\protect\citeauthoryear{Jayaraman and Grauman}{Jayaraman and
   Grauman}{2017}]{Jayaraman2017}
@@ -163,128 +40,11 @@ Jayaraman, D. and K.~Grauman (2017).
 \newblock {\em CoRR\/}~{\em abs/1709.00507}.
 
 
-\bibitem[\protect\citeauthoryear{Jordan}{Jordan}{2005}]{jordan2005}
-Jordan, M.~I. (2005).
-\newblock Dirichlet process, chinese restaurant process and all that.
-\newblock Tutorial presentation at NIPS Workshop on Nonparametric Bayesian
-  Methods.
-
-\bibitem[\protect\citeauthoryear{Kalmbach, Girdhar, and Dudek}{Kalmbach
-  et~al.}{2013}]{Kalmbach2013}
-Kalmbach, A., Y.~Girdhar, and G.~Dudek (2013).
-\newblock {Unsupervised environment recognition and modeling using sound
-  sensing}.
-\newblock {\em Proceedings - IEEE International Conference on Robotics and
-  Automation\/}, 2699--2704.
-
-
-\bibitem[\protect\citeauthoryear{Kalmbach, Girdhar, Sosik, and Dudek}{Kalmbach
-  et~al.}{2017}]{Kalmbach2017a}
-Kalmbach, A., Y.~Girdhar, H.~M. Sosik, and G.~Dudek (2017).
-\newblock {Phytoplankton hotspot prediction with an unsupervised spatial
-  community model}.
-\newblock In {\em Proceedings - IEEE International Conference on Robotics and
-  Automation}, pp.\  4906--4913.
-
-\bibitem[\protect\citeauthoryear{Kalmbach, Hoeberechts, Albu, Glotin, Paris,
-  and Girdhar}{Kalmbach et~al.}{2016}]{Kalmbach2016}
-Kalmbach, A., M.~Hoeberechts, A.~Albu, H.~Glotin, S.~Paris, and Y.~Girdhar
-  (2016).
-\newblock {Learning deep-sea substrate types with visual topic models}.
-\newblock In {\em 2016 IEEE Winter Conference on Applications of Computer
-  Vision, WACV 2016}.
-
-\bibitem[\protect\citeauthoryear{Kalmbach, Sosik, Dudek, and Girdhar}{Kalmbach
-  et~al.}{2017}]{Kalmbach2017}
-Kalmbach, A., H.~M. Sosik, G.~Dudek, and Y.~Girdhar (2017).
-\newblock {Learning Seasonal Phytoplankton Communities with Topic Models}.
-\newblock In {\em Oceans Mts/Ieee}.
-
 \bibitem[\protect\citeauthoryear{Kingma and Ba}{Kingma and
   Ba}{2014}]{KingmaAdam}
 Kingma, D.~P. and J.~Ba (2014).
 \newblock Adam: {A} method for stochastic optimization.
 \newblock {\em CoRR\/}~{\em abs/1412.6980}.
-
-
-\bibitem[\protect\citeauthoryear{Kingma and Welling}{Kingma and
-  Welling}{2014}]{Kingma2014}
-Kingma, D.~P. and M.~Welling (2014).
-\newblock {Auto-Encoding Variational Bayes}.
-\newblock In {\em ICLR}, Number~Ml, pp.\  1--14.
-
-\bibitem[\protect\citeauthoryear{Krumbein and Aberdeen}{Krumbein and
-  Aberdeen}{1937}]{Krumbein1937}
-Krumbein, W.~C. and E.~J. Aberdeen (1937).
-\newblock The sediments of barataria bay [louisiana].
-\newblock {\em Journal of Sedimentary Research\/}~{\em 7\/}(1), 3.
-
-
-\bibitem[\protect\citeauthoryear{Kuhn}{Kuhn}{1955}]{KuhnHungarian}
-Kuhn, H.~W. (1955).
-\newblock {The Hungarian method for the assignment problem}.
-\newblock {\em Naval Research Logistics Quarterly\/}~{\em 2\/}(1-2), 83--97.
-
-
-\bibitem[\protect\citeauthoryear{Liao, Zhu, Lei, Zhang, and Li}{Liao
-  et~al.}{2007}]{Liao2007}
-Liao, S., X.~Zhu, Z.~Lei, L.~Zhang, and S.~Li (2007).
-\newblock {Learning Multi-scale Block Local Binary Patterns for Face
-  Recognition}.
-\newblock {\em Advances in Biometrics\/}, 828--837.
-
-
-\bibitem[\protect\citeauthoryear{Lorenzen}{Lorenzen}{1966}]{Lorenzen1966}
-Lorenzen, C.~J. (1966).
-\newblock {A method for the continuous measurement of in vivo chlorophyll
-  concentration}.
-\newblock {\em Deep-Sea Research\/}~{\em 13}, 223--227.
-
-
-\bibitem[\protect\citeauthoryear{Lowe}{Lowe}{2004}]{Lowe2004}
-Lowe, D.~G. (2004).
-\newblock {Distinctive Image Features from Scale-Invariant Keypoints}.
-\newblock {\em International Journal of Computer Vision\/}, 1--28.
-
-
-\bibitem[\protect\citeauthoryear{Niebles, Wang, and Fei-Fei}{Niebles
-  et~al.}{2008}]{Niebles2008}
-Niebles, J.~C., H.~Wang, and L.~Fei-Fei (2008, Sep).
-\newblock Unsupervised learning of human action categories using
-  spatial-temporal words.
-\newblock {\em International Journal of Computer Vision\/}~{\em 79\/}(3),
-  299--318.
-
-
-\bibitem[\protect\citeauthoryear{Olson and Sosik}{Olson and
-  Sosik}{2007}]{Olson2007a}
-Olson, R.~J. and H.~M. Sosik (2007, jun).
-\newblock {A submersible imaging-in-flow instrument to analyze nano-and
-  microplankton: Imaging FlowCytobot}.
-\newblock {\em Limnology and Oceanography: Methods\/}~{\em 5\/}(6), 195--203.
-
-
-\bibitem[\protect\citeauthoryear{Paris, Halkias, and Glotin}{Paris
-  et~al.}{2012}]{Paris2012}
-Paris, S., X.~Halkias, and H.~Glotin (2012).
-\newblock {Efficient Bag of Scenes Analysis for Image Categorization}.
-\newblock {\em International Conference on Pattern Recognition Applications and
-  Methods\/}.
-
-
-\bibitem[\protect\citeauthoryear{Peacock, Olson, and Sosik}{Peacock
-  et~al.}{2014}]{peacock2014parasitic}
-Peacock, E.~E., R.~J. Olson, and H.~M. Sosik (2014).
-\newblock Parasitic infection of the diatom guinardia delicatula, a recurrent
-  and ecologically important phenomenon on the new england shelf.
-\newblock {\em Marine Ecology Progress Series\/}~{\em 503}, 1--10.
-
-
-\bibitem[\protect\citeauthoryear{Pritchard, Stephens, and Donnelly}{Pritchard
-  et~al.}{2000}]{Pritchard2000}
-Pritchard, J.~K., M.~Stephens, and P.~Donnelly (2000).
-\newblock Inference of population structure using multilocus genotype data.
-\newblock {\em Genetics\/}~{\em 155\/}(2), 945--959.
 
 
 \bibitem[\protect\citeauthoryear{Simonyan and Zisserman}{Simonyan and
@@ -294,32 +54,13 @@ Simonyan, K. and A.~Zisserman (2014).
 \newblock {\em CoRR\/}~{\em abs/1409.1556}.
 
 
-\bibitem[\protect\citeauthoryear{Sosik, Futrelle, Brownlee, Peacock, Crockford,
-  and Olson}{Sosik et~al.}{}]{Sosik2016}
-Sosik, H.~M., J.~Futrelle, E.~F. Brownlee, E.~Peacock, T.~Crockford, and R.~J.
-  Olson.
-\newblock {IFCB-Analysis software system}.
+\bibitem[\protect\citeauthoryear{van~den Oord, Kalchbrenner, Vinyals, Espeholt,
+  Graves, and Kavukcuoglu}{van~den Oord et~al.}{2016}]{OordPixelCNN}
+van~den Oord, A., N.~Kalchbrenner, O.~Vinyals, L.~Espeholt, A.~Graves, and
+  K.~Kavukcuoglu (2016).
+\newblock Conditional image generation with pixelcnn decoders.
+\newblock {\em CoRR\/}~{\em abs/1606.05328}.
 
-\bibitem[\protect\citeauthoryear{Sosik and Olson}{Sosik and
-  Olson}{2007}]{Sosik2007}
-Sosik, H.~M. and R.~J. Olson (2007, jun).
-\newblock {Automated taxonomic classification of phytoplankton sampled with
-  imaging-in-flow cytometry}.
-\newblock {\em Limnology and Oceanography: Methods\/}~{\em 5\/}(6), 204--216.
-
-
-\bibitem[\protect\citeauthoryear{Sturm, Morvidone, and Daudet}{Sturm
-  et~al.}{2010}]{Sturm2010}
-Sturm, B., M.~Morvidone, and L.~Daudet (2010).
-\newblock {Musical instrument identification using multiscale mel-frequency
-  cepstral coefficients}.
-\newblock In {\em 18th European Signal Processing Conference (EUSIPCO-2010)},
-  Number~1, pp.\  0--4.
-
-\bibitem[\protect\citeauthoryear{Teh}{Teh}{2010}]{Teh2010}
-Teh, Y.~W. (2010).
-\newblock {\em Dirichlet Process}, pp.\  280--287.
-\newblock Boston, MA: Springer US.
 
 \bibitem[\protect\citeauthoryear{van~den Oord, Vinyals, and
   kavukcuoglu}{van~den Oord et~al.}{2017}]{vqvae2017}
@@ -329,11 +70,13 @@ van~den Oord, A., O.~Vinyals, and k.~kavukcuoglu (2017).
   S.~Vishwanathan, and R.~Garnett (Eds.), {\em Advances in Neural Information
   Processing Systems 30}, pp.\  6306--6315. Curran Associates, Inc.
 
-\bibitem[\protect\citeauthoryear{Wallach, Murray, Salakhutdinov, and
-  Mimno}{Wallach et~al.}{2009}]{Wallach2009}
-Wallach, H.~M., I.~Murray, R.~Salakhutdinov, and D.~Mimno (2009).
-\newblock {Evaluation Methods for Topic Models}.
-\newblock {\em International Conference on Machine Learning\/}~(d), 1--8.
+\bibitem[\protect\citeauthoryear{Vincent, Larochelle, Lajoie, Bengio, and
+  Manzagol}{Vincent et~al.}{2010}]{vincent2010stacked}
+Vincent, P., H.~Larochelle, I.~Lajoie, Y.~Bengio, and P.-A. Manzagol (2010).
+\newblock Stacked denoising autoencoders: Learning useful representations in a
+  deep network with a local denoising criterion.
+\newblock {\em Journal of machine learning research\/}~{\em 11\/}(Dec),
+  3371--3408.
 
 
 \bibitem[\protect\citeauthoryear{Xiao, Ehinger, Oliva, and Torralba}{Xiao
