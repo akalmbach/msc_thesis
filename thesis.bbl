@@ -189,11 +189,12 @@ Hofmann, T. (2001, Jan).
 
 
 \bibitem[\protect\citeauthoryear{Jayaraman and Grauman}{Jayaraman and
-  Grauman}{2017}]{Jayaraman2017}
-Jayaraman, D. and K.~Grauman (2017).
-\newblock Learning to look around.
-\newblock {\em CoRR\/}~{\em abs/1709.00507}.
-
+  Grauman}{2018}]{Jayaraman2017}
+Jayaraman, D. and K.~Grauman (2018, June).
+\newblock Learning to look around: Intelligently exploring unseen environments
+  for unknown tasks.
+\newblock In {\em The IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}.
 
 \bibitem[\protect\citeauthoryear{Jordan}{Jordan}{2005}]{jordan2005}
 Jordan, M.~I. (2005).
@@ -363,6 +364,13 @@ Sosik, H.~M. and R.~J. Olson (2007, jun).
   imaging-in-flow cytometry}.
 \newblock {\em Limnology and Oceanography: Methods\/}~{\em 5\/}(6), 204--216.
 
+
+\bibitem[\protect\citeauthoryear{Srivastava and Sutton}{Srivastava and
+  Sutton}{2017}]{srivastava2017autoencoding}
+Srivastava, A. and C.~Sutton (2017).
+\newblock Autoencoding variational inference for topic models.
+\newblock In {\em Proceedings of the International Conference on Learning
+  Representations (ICLR)}.
 
 \bibitem[\protect\citeauthoryear{Sturm, Morvidone, and Daudet}{Sturm
   et~al.}{2010}]{Sturm2010}
