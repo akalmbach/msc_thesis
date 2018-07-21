@@ -16,7 +16,8 @@
   $V$ & Vocabulary size, number of distinct values of $w$ \\
   $N_{g(x)}^k$ & Number of times topic $k$ was used in neighborhood $g(x)$ \\
   $N_k^v$ & Number of times topic $k$ was used for word $v$ \\
-  $N_{\cdot,-i}^\cdot$ & Count as above, but excluding the $i$-th datapoint
+  $N_{\cdot,-i}^\cdot$ & Count as above, but excluding the $i$-th datapoint\\
+  $\sigma$ & The softmax function where the $i$-th dimension $\sigma(x)_i = {e^{x_i}} / \sum_j e^{x_j}$
 \end{tabular}\\
 
 \chapter{Categorical Information Boost Autoencoder Architecture Details} \label{ch:cibae-arch}
