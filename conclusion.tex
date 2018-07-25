@@ -1,2 +1,18 @@
+%!TEX root = thesis.tex
+
 \chapter{Conclusion}
-3 pg
+
+In this thesis we have demonstrated the versatility of the spatio-temporal topic model as a tool for understanding complex data in terms of coherent spatio-semantic maps. We have shown their utility for many datasets beyond the textual ones normally associated with the topic modelling literature. More specifically, we have found that a prior that combines sparseness and spatial smoothness leads to a model that can learn categories closely related to the natural human-generated ones with extremely limited supervision.
+
+In the process we explored how the choice of feature function impacts the resulting topic prior maps, and how to use this to our advantage to get topics that match human-centric labels. Further, we investigated projecting topic priors back into the space of features. Because our topic priors are low-dimensional and spatio-temporally smooth, we found that they are easier to predict than feature distributions directly. Combining these two concepts, we were able to predict feature distributions from very limited training data. Finally, we demonstrated an autoencoding method to learn a feature distribution function suitable for topic modelling. This method allows inverting a feature distribution back into the raw data domain -- images. Adding this last technique, we are able to directly inspect and evaluate the spatial predictions and topics themselves in a natural, human-interpretable domain.
+
+In addition to these general contributions, we have specifically demonstrated the utility of the spatio-temporal topic model for a variety of domains. First, we showed that with careful design of a feature function, the model can be used to identify deep-sea substrate types from repurporsed ROV videos. Then, we showed that the model's temporal smoothness assumption makes for an improved audio similarity measure based on topics. Next, we used the topic model to model phytoplankton communities, offering novel understanding of the relationships and inter-relationships between species and environmental factors.
+\todo[inline]{Finally, we showed something specific in the last chapter.}
+
+\section{Future Work}
+\todo[inline]{Linking up learned feature functions and weak supervision.}
+\todo[inline]{Making feature spaces interpretable as maps for web-scale problems.}
+\todo[inline]{Topic space suitable as an IRL feature space.}
+
+\section{Final Word}
+In this thesis we presented an approach to learn spatially coherent maps of complex data without any supervision. Our key insight is that interpretable maps across many domains feature a combination of semantic sparseness and spatio-temporal smoothness. We implemented these assumptions in a Bayesian probabalistic framework, which allowed us to learn easy to use representations for a wide variety of perception tasks. We showed both that human-centric interpretation is simplified and supervised learning is honed in limited-data scenarios by using our learned representations.
