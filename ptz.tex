@@ -2,7 +2,7 @@
 
 \chapter{Spatial Awareness for Robot Cameras: Predicting images from topic context} \label{ch:spatial-prediction}
 
-In this chapter we consider learning a word distribution function which is suitable for topic modelling as well as a function to map such a word distribution back to the original domain. Such a feature representation, combined with a spatio-temporal topic model opens a broad range of applications where we would like to develop a high-level understanding of data in its original domain rather than in a word-like representation. Specifially, we consider modelling the views available to a Pan, Tilt, Zoom (PTZ) camera. Our word distribution function is a novel convolutional autoencoder (CAE), which takes an image as input, produces a distribution of words as its encoding, and then attempts to reconstruct the original image from this encoding. By fitting a topic model within a domain where we can decode word distributions to images,\todo[inline]{Supervised learning for a feature function. As an alternative, words could be used to represent something other than spatial objects that may fit better with the spatial smoothness prior.} we enable a user of the PTZ camera to inspect the topic distributions $\Phi$ directly as images. These topic images provide an intuitive decomposition of the parts of the high-level features of the scene, and a novel interface to explore views by combing them in different proportions.
+In this chapter we consider learning a word distribution function which is suitable for topic modelling as well as a function to map such a word distribution back to the original domain. Such a feature representation, combined with a spatio-temporal topic model opens a broad range of applications where we would like to develop a high-level understanding of data in its original domain rather than in a word-like representation. Specifially, we consider modelling the views available to a Pan, Tilt, Zoom (PTZ) camera. Our word distribution function is a novel convolutional autoencoder (CAE), which takes an image as input, produces a distribution of words as its encoding, and then attempts to reconstruct the original image from this encoding. By fitting a topic model within a domain where we can decode word distributions to images, we enable a user of the PTZ camera to inspect the topic distributions $\Phi$ directly as images. These topic images provide an intuitive decomposition of the parts of the high-level features of the scene, and a novel interface to explore views by combing them in different proportions.
 
 Further, we employ a similar approach to Ch.~\ref{sec:plankton-seasonal} to recover the MAP word distributions given the learned topic prior for a neighborhood. Together with the reconstruction function, this enables us to directly view the data captured by the topic model and the data that is lost by constraining ourselves to a sparse, low-dimensional representation. Finally, we develop an energy-based topic-prior mapping model that exploits the spatial smoothness of the learned topic priors to make predictions for unobserved views. Combining all of these pieces together, we develop a system to predict the images a PTZ camera will encounter when it configures itself for novel views.
 
@@ -45,7 +45,24 @@ L_{CIB} \approx \mathcal{L}_{CIB} = \frac{1}{M} \left( \sum_{i=1}^M \frac{(I_m -
 \end{equation}
 where $|I|$ denotes the (fixed) number of pixel for an input image. In other words our loss is the MSE plus the average entropy of all encodings, minus the entropy of the average encoding. We find in practice that when the image space is normalized to the range $[-a,a]$, $\lambda = \frac{(2a)^2}{\log V}$ is a good choice, where $V$ is the dimension of the encodings \footnote{Note $\log V$ is the maximum possible entropy for a categorical distribution of dimension $V$, so this choice represents letting the MSE and MI terms have `equal' weight when both are in their worst cases}.
 
-Our specific choice of architecutre is inspired by the feature layers of VGG \citep{Simonyan14c}. In particular, following the approach of Segnet \citep{BadrinarayananK15} we choose a VGG-like encoder, with a symmetric decoder of transposed convolutional layers. This style of encoder uses a sequence of convolution `blocks', which each ultimately either downsample (Max Pool) or upsample (Nearest Neighbor) the activations by a factor of two. We add an additional dropout and an additional softmax layer to the encodings to constrain the real-valued activations of a Segnet style encoding to a simplex. Our feature representation downsamples the image spatially by a factor of 32, while producing a 512 channel feature activation for each spatial region. All experiments are conducted with $128 \times 128 \times 3$ input images, resulting in $4 \times 4 \times 512 = 8192$ dimensional encodings distributions. The full details of our architecture are found in App.~\ref{ch:cibae-arch}, however we emphasize that by adding these two extra layers and the additional loss term, our approach can be transferred to many domains and existing autoencoder architectures. 
+Our specific choice of architecutre is inspired by the feature layers of VGG \citep{Simonyan14c}. In particular, following the approach of Segnet \citep{BadrinarayananK15} we choose a VGG-like encoder, with a symmetric decoder of transposed convolutional layers. This style of encoder uses a sequence of convolution `blocks', which each ultimately either downsample (Max Pool) or upsample (Nearest Neighbor) the activations by a factor of two. We add an additional dropout and an additional softmax layer to the encodings to constrain the real-valued activations of a Segnet style encoding to a simplex. Our feature representation downsamples the image spatially by a factor of 32, while producing a 512 channel feature activation for each spatial region. All experiments are conducted with $128 \times 128 \times 3$ input images, resulting in $4 \times 4 \times 512 = 8192$ dimensional encodings distributions. The full details of our architecture are found in App.~\ref{ch:cibae-arch}, however we emphasize that by adding these two extra layers and the additional loss term, our approach can be transferred to many domains and existing autoencoder architectures.
+
+\begin{figure}
+    \centering
+    \subfloat[][]{
+        \includegraphics[width=0.3\textwidth]{figures/ptz/words_spatial}
+        \label{fig:words-spatial}
+    }
+    \subfloat[][]{
+        \includegraphics[width=0.6\textwidth]{figures/ptz/top_words}
+        \label{fig:words-top}
+    }
+    \label{fig:cibae-words}
+    \caption{CIB-AE decodings of single `words', \emph{ie.} one-hot encoding vectors.
+             \protect\subref{fig:words-spatial} 512 words are nearly duplicated at $4 \times 4$ positions within the image.
+             \protect\subref{fig:words-top} The 128 most common words (shown in their center position).}
+
+\end{figure}
 
 \section{Spatial topic prediction model}
 
@@ -79,7 +96,7 @@ where $m(x) = \frac{\theta(x)+\Theta^\star_x}{2}$. While $D_{KL}$ would most dir
 \subsection{Simulated Pan-Tilt-Zoom Camera Dataset}
 \begin{figure}
     \centering
-    \includegraphics[width=0.85\textwidth]{figures/ptz/sun360_9x.png}
+    \includegraphics[width=0.85\textwidth]{figures/ptz/sun360_9x.jpg}
     \caption{Example 360 degree panoramas from the SUN360/street dataset.}
     \label{fig:sun360_ex}
 \end{figure}
@@ -137,7 +154,7 @@ In addition, prediction with our spatial topic prior model is extremely efficien
         }
     \end{minipage} \hfill
     \begin{minipage}{0.6\textwidth}
-        \subfloat[][]{{}
+        \subfloat[][]{
             \includegraphics[width=\columnwidth]{figures/ptz/pano_0_map.png}
             \label{fig:pano-0-map}
         } \\
@@ -270,3 +287,5 @@ Of note is the level of performance our model is able to achieve with a very sim
 
 \subsection{End-to-End Variational LDA Autoencoder}
 While the CIB-AE provides a slight modifications that can be made to many standard networks to produce encodings roughly compatible with the Dirichlet prior of LDA, it is natural to ask whether the full model can be learned end-to-end, and fine-tuned for particular environments instead of training a separate model. In fact, \citep{srivastava2017autoencoding} explores implementing the LDA prior for the latent space of a Variational autoencoder, and although the Dirichlet distribution resists exact reparameterization with a simple distribution as is used in other Variational autoencoders, they use a Laplace approximation to achieve comparable results to the standard mean-field variational approximation with much more flexibility. Although the extra dependencies in the spatio-temporal topic model are not compatible with the reparameterization used, we envision pre-training an LDA inference network similar to \citet{srivastava2017autoencoding} similar to our CIB-AE training procedure, and then using the resulting word encoder-decoder along with the Gibbs sampler spatio-temporal topic model, which could be initialilzed from the learned $\Phi$ matrix of the non-spatial topic model.
+
+\todo[inline]{Recurrent autoencoder features}

@@ -1,10 +1,11 @@
 %!TEX root = thesis.tex
 
 \chapter{Soft, Unsupervised Classification with Spatio-Temporal Topic Models} \label{ch:topic-models-examples}
-Our first two example applications explore the most direct connection to the topic modelling literature, performing unsupervised classification by defining a feature function, fitting a topic model, and grouping observations by their neighborhood's topic distribution. In Sec.~\ref{sec:substrate} we detail our work on deep-sea substrate classification from a challenging video dataset \citep{Kalmbach2016}. This application highlights the impressive closeness between the representation learned by our completely unsupervised technique and labels produced by a human expert which can be achieved by carefully designing a feature-function. Then in Sec.~\ref{sec:audio} we review our work on recognizing locations based on topic models of ambient audio \citep{Kalmbach2013}. This application highlights the applicability of spatio-temporal topic models to applications outside of computer vision, as well as the importance of spatio-temporal smoothness to representations learned in the absence of training targets.
+Our first two example applications explore the most direct connection to the topic modelling literature, performing unsupervised classification by defining a feature function, fitting a topic model, and grouping observations by their neighborhood's topic distribution. In Sec.~\ref{sec:substrate} we detail our work on deep-sea substrate classification from a challenging video dataset \citep{Kalmbach2016}. This application highlights the impressive closeness between the representation learned by our completely unsupervised technique and labels produced by a human expert which can be achieved by carefully designing a feature-function. Then in Sec.~\ref{sec:audio} we review our work on recognizing locations based on topic models of ambient audio \citep{Kalmbach2013}. This application highlights the applicability of spatio-temporal topic models to problems outside of computer vision, as well as the importance of spatio-temporal smoothness to representations learned in the absence of training targets.
 
 \section{Substrate Classification from Repurposed Dive Videos} \label{sec:substrate}
 
+\todo[inline]{Reduce the intro to this section}
 % \subsubsection{The need for soft substrate classifications from poor data}
 % Paragraph: Why substrate classification matters
 Substrate classification, the task of creating a spatial description of the nature of the seabed, is a fundamental factor in many aspects of ocean research.
@@ -48,7 +49,7 @@ By spatial envelope, we refer to the holistic representation of the shape of a s
 descriptor described in [12]. GIST descriptors have been shown to encode high-level perceptual dimensions of the
 spatial envelope such as ‘naturalness’, ‘openness’, ‘roughness’ etc. This descriptor is computed using a method based on Gabor filter responses in multiple orientations and scales, and in a grid of image windows across the image. GIST descriptors are appropriate as the local appearance of images with substrate varies dramatically, and the spatial envelope is more important that any local features.
 
-We manually labelled 2000 randomly selected frames as either relevant or irrelevant (i.e. with or without substrate) for our subsequent classification problem. We trained an SVM using 1000 frames randomly selected from these 2000 labelled examples, and evaluated its performance on the other 1000. Table 1b shows the precision and recall computed over all frames in the test set.
+We manually labelled 2000 randomly selected frames as either relevant or irrelevant (\emph{ie} with or without substrate) for our subsequent classification problem. We trained an SVM using 1000 frames randomly selected from these 2000 labelled examples, and evaluated its performance on the other 1000. Table~\ref{tab:GIST-svm-performance} shows the precision and recall computed over all frames in the test set.
 
 \begin{table}[t]
     \begin{center}
@@ -116,12 +117,12 @@ where we set the frequency cutoff parameters $f_{low}$ and $f_{high}$ to be 4 an
 We validate our method using data recorded at the Endeavour Segment of the Juan de Fuca Ridge, a midocean
 ridge environment 300 km West of Vancouver Island, British Columbia, at approximately 2.2 km depth \citep{endeavourMPAPlan}. Specifically, our data is from the East Flank of Endeavour, a gently sloping area featuring a variety of substrate types. Mission objectives on this dive were to perform a visual survey for suitability of a scientific instrument installation -- much of the video shows substrate, but distance, angle, and speed are inconsistent throughout the recording.
 
-The data consist of 30 fps HD video and 10 Hz USBL acoustic positioning. The ROV moved at an average rate of 0.5 knots (approx. 0.26 m/s), through two partially overlapping lawnmower patterns, one up and down a gentle slope, and one across the flat area at the base of the slope, with a total distance travelled of just over 5.6 km. We ran the substrate detector on every third frame (synchronized with the USBL data), and applied the spatial subsampling described above with a minimum inter-frame distance of 1.5 m. This process resulted in a dataset of just over 3000 images.
+The data consist of 30 fps HD video and 10 Hz USBL acoustic positioning. The ROV moved at an average rate of 0.5 knots (approx. 0.26 m/s), through two partially overlapping lawnmower patterns, one up and down a gentle slope, and one across the flat area at the base of the slope, with a total distance travelled of just over 5.6 km. We ran the substrate detector on every third frame (synchronized with the USBL data), and applied spatial subsampling with a minimum inter-frame distance of 1.5 m. This process resulted in a dataset of just over 3000 images.
 
 Of these, we randomly selected 500 images, and with guidance from an expert in deep-sea geology, we defined seven categories that represent the types of substrate seen in the sample. These categories were ‘Sedimented’ (SED), ‘Interrupted Lava Flow’ (INT), Pillow Lava Flow’ (PIL), ‘Cliff or Wall’ (CLIFF), ‘Other Rock’ (O.RCK), ‘Turbid Water’ (TURB), and ‘Substrate out of Range’ (DARK). We labelled each image in this sample with proportions of these seven types, using a minimum increment of 0.25 for each category. Images exemplifying each category can be seen in Fig.~\ref{fig:substrate-best1gt}.
 
 % 3 Paragraph: Pairing topics and classes
-We generated the SIFT and LBP bag-of-words representations for each image in the full dataset, using the noise supression techniques described above. We used scale factor 2 for the ILBP region with a uniform 6x7 grid of non-overlapping windows. Initial experimentation showed that these values produced good results, and that additional scales did not cause significant improvement. We then fit the spatio-temporal topic model on each feature representation, choosing a neighborhood size of 15 m and 7 topics based on the estimated variation of the terrain and the number of true categories. We repeated this process for each pair of sparcity hyperparameters $\alpha, \beta \in \{0.01, 0.1, 0.2, 0.4, 0.8, 0.9, 0.99\}$. We chose the model with maximum log-probability on the held-out 500 image labelled set: $\alpha = 0.1, \beta = 0.1$ for SIFT and $\alpha = 0.1, \beta = 0.8$ for LBP. For these 500 datapoints, we infer topic assignments without updating the model. Although the most extreme values of $\alpha$ and $\beta$ tended to perform poorly, intermediate values had similar perplexities, and the exact hyperparameter choice did not seem to have a strong effect on the learned topics. \todo[inline]{weird sentence ordering}
+We generated the SIFT and LBP bag-of-words representations for each image in the full dataset, using the noise supression techniques described above. We used scale factor 2 for the ILBP region with a uniform 6x7 grid of non-overlapping windows. Initial experimentation showed that these values produced good results, and that additional scales did not cause significant improvement. We then fit the spatio-temporal topic model on each feature representation, choosing a neighborhood size of 15 m and 7 topics based on the estimated variation of the terrain and the number of true categories. We repeated this process for each pair of sparcity hyperparameters $\alpha, \beta \in \{0.01, 0.1, 0.2, 0.4, 0.8, 0.9, 0.99\}$. We chose the model with maximum log-probability on the held-out 500 image labelled set: $\alpha = 0.1, \beta = 0.1$ for SIFT and $\alpha = 0.1, \beta = 0.8$ for LBP. For these 500 datapoints, we infer topic assignments without updating the model. Although the most extreme values of $\alpha$ and $\beta$ tended to perform poorly, intermediate values had similar log-probabilities, and the exact hyperparameter choice did not seem to have a strong effect on the learned topics.
 
 To evaluate the degree to which each ground-truth category was represented by some topic generated by our algorithm, we produced a one-to-one pairing between categories and topics. First, we calculated the Pearson $\rho$ correlation between each ground-truth category and each topic produced by our algorithm, using all 500 of the ground-truth frames. Then, we defined the cost of associating category $i$ with topic $j$ as $Cost(i, j) = 1 - \rho_{i,j}$, and used the well known Kuhn-Munkres (`Hungarian') Algorithm \citep{KuhnHungarian}, to find a minimal total cost assignment. In other words, we paired categories and topics so as to maximize the sum of correlations in the set of pairings. As the pairing is between topics and classes (a $7\times7$ matching problem), the cost of this process is negligeable.
 
@@ -131,7 +132,7 @@ We also evaluated optimal pairings for K-Means clusterings of the SIFT, raw LBP,
 Fig.~\ref{fig:substrate-exout} shows the most representative frames for each topic. These images show the 7 frames that have the highest proportion of each topic throughout the dataset. Note that some topics were much more prevalent than others, so
 an image may be among the best examples of a particular topic in the dataset without that topic being the top label for
 the image. For instance, many of the strongest examples of interrupted lava flows contain more sediment than interrupted
-lava flow. Comparison with the examples in \ref{fig:substrate-best1gt} suggests that the topics assigned
+lava flow. Comparison with the examples in Fig.~\ref{fig:substrate-best1gt} suggests that the topics assigned
 to sediment, turbid water, and substrate out of range accurately recover their categories, and that the
 other assignments are somewhat less accurate.
 
@@ -162,13 +163,6 @@ These p-values represent a strong rejection of the hypothesis that the topics we
   \label{fig:substrate-examples}
 \end{figure}%
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/wacv/mixture-map2.pdf}
-    \caption{\emph{Estimated substrate mixture map for Endeavour Ridge, BC:} ROV track with topic mixtures at each sample point. The line represents the path of the ROV, and each point is the location of a substrate sample image. At each point, there are circles for each of the three topics, with their sizes representing the mixture of the topics in that sample.}
-    \label{fig:substrate-topic-map}
-\end{figure}
-
 \begin{table}
     \centering
     \caption{\emph{Detailed substrate classification performance:}
@@ -189,7 +183,7 @@ These p-values represent a strong rejection of the hypothesis that the topics we
     \label{tab:substrate-performance-7}
 
     \caption{\emph{High-level substrate classification performance:}
-    		 Pearson $\rho\left(498\right)$ for best-match topic with 3 high-level categories. Our method had correlation coefficient above 0.7 for every category, with p-value $\ll 0.001$.}
+         Pearson $\rho\left(498\right)$ for best-match topic with 3 high-level categories. Our method had correlation coefficient above 0.7 for every category, with p-value $\ll 0.001$.}
     \begin{tabular}{|c|ccccc|}
         \hline
              & K-M SIFT & K-M LBP & K-M Filt. LBP & ROST SIFT & \textbf{ROST Filt. LBP}\\
@@ -203,7 +197,14 @@ These p-values represent a strong rejection of the hypothesis that the topics we
     
 \end{table}
 
-In absolute terms, the values of the correlations reflect the intuition given by the best examples of each topic: The categories sediment, turbid water, and no substrate are each strongly correlated with their assigned topic, but the other categories are only weakly correlated with their assignment. Therefore, we additionally analyze our system's performance in classifying the high-level categories ‘Sediment’, ‘Rocky’, and ‘No Substrate’. These categories were constructed by combining the original categories, as seen in the leftmost column of Fig.\ref{fig:substrate-examples}. We combined the groundtruth labels, topics, and labels for the three baseline methods by summing over the groups to be combined into each of the three categories. The performance of the resulting models is presented in \ref{tab:substrate-performance-3}, showing that the LBP topics show strong predictive ability for the high-level class labels.
+In absolute terms, the values of the correlations reflect the intuition given by the best examples of each topic: The categories sediment, turbid water, and no substrate are each strongly correlated with their assigned topic, but the other categories are only weakly correlated with their assignment. Therefore, we additionally analyze our system's performance in classifying the high-level categories ‘Sediment’, ‘Rocky’, and ‘No Substrate’. These categories were constructed by combining the original categories, as seen in the leftmost column of Fig.~\ref{fig:substrate-examples}. We combined the groundtruth labels, topics, and labels for the three baseline methods by summing over the groups to be combined into each of the three categories. The performance of the resulting models is presented in Table~\ref{tab:substrate-performance-3}, showing that the LBP topics show strong predictive ability for the high-level class labels.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/wacv/mixture-map2.pdf}
+    \caption{\emph{Estimated substrate mixture map for Endeavour Ridge, BC:} ROV track with topic mixtures at each sample point. The line represents the path of the ROV, and each point is the location of a substrate sample image. At each point, there are circles for each of the three topics, with their sizes representing the mixture of the topics in that sample.}
+    \label{fig:substrate-topic-map}
+\end{figure}
 
 Finally, in Fig.~\ref{fig:substrate-topic-map} we present the map of high-level substrate types produced by the LBP topic model. Maps of this type provide an interface between our method and biological or geological research which seeks to use information about substrate type. For instance, this map could be used in conjunction with a map of observations of a certain species to help answer questions about how habitat suitability is related to substrate type. Note that most points are described mainly by a single type, and that the substrate type assignments are spatially consistent. This outcome is crucial to an intuitive understanding of the map; it allows scientists to think naturally about regions of the substrate while still admitting that transitional areas which cannot be labelled as a single type exist. By choosing a spatial topic model to capture the visual data, we explicitly require our method to recover such an interpretable model. The automatic substrate classifications of our work are included in the GIS database for the Endeavour marine protected area, and are publicly available to researchers interested in the area \citep{Douglas2017} \footnote{An interactive version of this database is avilable online at \url{http://www.oceannetworks.ca/endeavour-hydrothermal-vents-marine-protected-area}}.
 
@@ -212,7 +213,7 @@ Finally, in Fig.~\ref{fig:substrate-topic-map} we present the map of high-level 
 %%% How are semantic closeness, feature closeness, and topic closeness related? %%%
 %%% 8 pg %%%
 
-Our second example application of spatio-temporal topic models highlights the versatility of the model, operating on features from ambient audio. To the best of our knowledge, this is the first application of topic models to audio domain data. Our ability to consider temporal dependencies is crucial for this application as sound is fundamentally linked to temporal variation.
+Our second example application of spatio-temporal topic models highlights the versatility of the model, operating on features from ambient audio. To the best of our knowledge, this is the first application of topic models to environmental audio that takes advantage of spatially coherent semantic regions. Our ability to consider temporal dependencies is crucial for this application as sound is fundamentally linked to temporal variation.
 
 In this work we consider how to identify similar world regions by modelling the statistics of ambient sounds. We hypothesize that transitions in acoustic space correlate with transitions in other characteristic properties of the environment. Therefore, we aim to use the ambient sound to identify particular places and detect when we have returned to places we have already visited. In the context of robotics, we envision this system as one of many inputs to a filter-based probabilistic localization system. Common sensors such as range-finders and cameras often produce precise location hypotheses, but they are also susceptible to ambiguities which give rise to multi-modal beliefs. In contrast, an ambient-sound based localization system would give relatively imprecise hypotheses, only identifying the high-level region rather than an exact pose. However ambiguities in the soundscape of an environment are potentially very different from keypoint or corner ambiguities which confuse traditional sensing modalities. As a result, even such `weak' loop closures from sound could help improve the performance of localization systems.
 

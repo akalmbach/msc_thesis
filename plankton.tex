@@ -60,7 +60,7 @@ The DP is an infinite-dimensional generalization of the Dirchlet distribution, o
 \begin{equation}
 H \sim DP(\eta, G) \Rightarrow (H(A_0), \ldots, H(A_r)) \sim Dir(\eta G(A_0),\ldots,\eta G(A_r))
 \end{equation}
-In the Bayesian non-parametric topic model, a DP prior is placed on $\theta$. $A$ is considered to be the set of possible topic assignments for a word, with no limit on the maximum possible value. The key insight is that for any number of topics currently in use, $K$, the distribution over the partition with an element for each of the $K$ topics, plus another for any other possible topic assignment, \emph{ie.} the partition $\{z = 0, \ldots, z = K - 1, z \geq K\}$, is a (finite) Dirichlet. We can view this in terms of the `Chinese Restaurant Process' construction, reparameterizing $G$ and $\eta$ in terms of our original symmetric Dirichlet parameter $\alpha$ and the probability $\gamma$ of incrementing the number of topics \citep{jordan2005}. This interpretation leads to a predictive distribution which is only a minor modification from the Dirichlet predictive distribution (Eqn.~\ref{eqn:posterior}):
+In the Bayesian non-parametric topic model, a DP prior is placed on $\theta$. $A$ is considered to be the set of possible topic assignments for a word, with no limit on the maximum possible value. The key insight is that for any number of topics currently in use, $K$, the distribution over the partition with an element for each of the $K$ topics, plus another for any other possible topic assignment, \emph{ie.} the partition $\{z = 0, z = 1, \ldots, z = K - 1, z \geq K\}$, is a (finite) Dirichlet. We can view this in terms of the `Chinese Restaurant Process' construction, reparameterizing $G$ and $\eta$ in terms of our original symmetric Dirichlet parameter $\alpha$ and the probability $\gamma$ of incrementing the number of topics \citep{jordan2005}. This interpretation leads to a predictive distribution which is only a minor modification from the Dirichlet predictive distribution (Eqn.~\ref{eqn:posterior}):
 \begin{equation}
 \begin{aligned}
 P(z_i = k | \boldsymbol{z_{-i}}) =
@@ -83,29 +83,55 @@ We demonstrate our method on a dataset recorded continuously from Jan. 2009 to J
 
 We aggregated the observations to produce the taxon distribution for each day during the 7.5 year period, and used this as input to our method. For the regression model, we chose a suite of 18 environment variables from the MVCO ocean data and meteorological data summaries (Fig.~\ref{fig:plankton-mvco-regression-inputs}). In addition to being naively chosen, the environment data features significant gaps and systematic noise due to the practical challenges of long-term ocean sensor deployments. Much of the systematic noise was suppressed by rejecting outliers based on the median absolute deviation of each variable, yet the regression task remains extremely challenging.
 
+% \begin{figure}
+%     \centering
+%     \begin{subfloat}
+%         \centering
+%         \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_gt.png}
+%         \caption{Observed daily taxon log-distributions at Martha's Vineyard Coastal Observatory over 7.5 years.}
+%         \label{fig:plankton-mvco-gt}
+%     \end{subfloat}%
+%     \begin{subfloat}
+%         \centering
+%         \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_hat_topics.png}
+%         \caption{Predicted taxon log-distributions using our community model and regression system.}
+%         \label{fig:plankton-mvco-topic-est}
+%     \end{subfloat}%
+% \end{figure}
+% \begin{figure}
+% 	\ContinuedFloat
+%     \begin{subfloat}
+%         \centering
+%         \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_hat_words.png}
+%         \caption{Predicted taxon log-distributions using direct regression on taxon distributions.}
+%         \label{fig:plankton-mvco-word-est}
+%     \end{subfloat}
+%     \caption{}
+%     \label{fig:plankton-mvco}
+% \end{figure}
+
 \begin{figure}
     \centering
-    \begin{subfloat}
-        \centering
-        \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_gt.png}
-        \caption{Observed daily taxon log-distributions at Martha's Vineyard Coastal Observatory over 7.5 years.}
+    \subfloat[][]{
+        \includegraphics[width=0.8\textwidth]{figures/oceans/taxa_distros_gt.png}
         \label{fig:plankton-mvco-gt}
-    \end{subfloat}%
-    \begin{subfloat}
-        \centering
-        \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_hat_topics.png}
-        \caption{Predicted taxon log-distributions using our community model and regression system.}
-        \label{fig:plankton-mvco-topic-est}
-    \end{subfloat}%
-\end{figure}
-\begin{figure}
-	\ContinuedFloat
-    \begin{subfloat}
-        \centering
-        \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_hat_words.png}
-        \caption{Predicted taxon log-distributions using direct regression on taxon distributions.}
+    }\\
+    \subfloat[][]{
+        \includegraphics[width=0.8\textwidth]{figures/oceans/taxa_distros_hat_topics.png}
         \label{fig:plankton-mvco-word-est}
-    \end{subfloat}
+    }\\
+    \ContinuedFloat
+    \subfloat[][]{
+        \centering
+        \includegraphics[width=0.8\textwidth]{figures/oceans/taxa_distros_hat_words.png}
+        \label{fig:plankton-mvco-topic-est}
+    }
+    \caption{Taxon log-distributions at Martha's Vineyard Coastal Observatory over 7.5 years.
+            \protect\subref{fig:plankton-mvco-gt} Measured.
+            \protect\subref{fig:plankton-mvco-word-est} Predicted based on observed maximum likelihood communities.
+            \protect\subref{fig:plankton-mvco-topic-est} Predicted based on environmental conditions using our communities-based regression system.
+    }
+    \label{fig:plankton-mvco}
 \end{figure}
 
 \begin{figure}
@@ -127,7 +153,7 @@ We demonstrate the utility of our method in comparison to two more standard regr
     \label{fig:plankton-mvco-kl-boxplot}
 \end{figure}
 
-We evaluated the resulting regression systems for all hyperparameter settings as well as the two baseline methods by comparing the predicted taxon distributions to the true distributions on each day in the dataset. Our error measure is the KL-Divergence between the predictions and the held-out distributons. We chose the community model with the lowest average KL-Divergence over all the days in the dataset, ultimately picking a model with 6 active communities. The predicted taxon distributions for this model are shown in Fig.~\ref{fig:plankton-mvco-topic-est}.
+We evaluated the resulting regression systems for all hyperparameter settings as well as the two baseline methods by comparing the predicted taxon distributions to the true distributions on each day in the dataset. Our error measure is the KL-Divergence between the predictions and the held-out distributons. We chose the community model with the lowest average KL-Divergence over all the days in the dataset, ultimately picking a model with 6 active communities. The predicted taxon distributions for this model are shown in Fig.~\ref{fig:plankton-mvco-word-est}.
 
 Fig.~\ref{fig:plankton-mvco-kl-boxplot} shows the taxon distribution prediction errors for this community model and our two baseline models, broken out by year. The boxes represent the distribution of prediction errors for nearly 365 days in 2009 through 2015, and 172 days in 2016 (nearly 365 because of some small gaps in the taxon count data). Our community model (leftmost for each year) achieved the lowest median error on every year in the dataset. We found that by optimizing the hyperparameters for the regression task, we were able to choose an interpretable representation of the community structure. In contrast, PCA does not feature any prior for temporal smoothness. As a result although its prediction error is on average only a little less accurate than our model's, the sequences of predictions it makes are sometimes implausible, featuring taxon distributions which change much more rapidly than the observed data. We found that both baselines were extremely susceptible to noise in the environment data, on average performing better than expected, but occasionally making extremely poor predictions (Fig.~\ref{fig:plankton-mvco-timeseries}). With our model, the regression problem is of a lower dimensionality than for direct regression, and therefore less susceptible to overfitting. For this reason when both models are presented with the same small amount of training data, our model is more able to avoid large errors for new inputs unlike the training data.
 
@@ -159,33 +185,33 @@ From our regression matrix, we can see that each of the 5 communities has a seas
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.95\textwidth]{figures/oceans/timeseries.png}
+	\includegraphics[width=0.95\textwidth]{figures/oceans/timeseries.jpg}
 	\caption{Timeseries representation of individual probability of observing 5 common taxa on each day in the dataset. Note that the community model's predictions are less susceptible to noise that the other two strategies.}
 	\label{fig:plankton-mvco-timeseries}
 \end{figure}
 
 Another outcome of our experiment is the communities themselves learned by our model (Fig.~\ref{fig:plankton-mvco-phi}). We found that across different hyperparameter choices, the top few most active communities were relatively similar to those presented here. Some associations based on our model have ready explanations. For instance community 1 is dominated by the taxa ``mix\_elongated'', representing miscellaneous centric diatiom chains, and ``leptocylindrus'', which both exhibit elongated morphologies and easily confuse the IFCB's vision-based classification system. As a more exciting example, communities 2 and 4 are the only communities with significant probability of observing the taxon ``Guinardia'', and are predicted by warm water temperatures, while \emph{Guinardia delicatula} populations have been noted to be negatively associated with parasites that do not survive during cold winters \citep{peacock2014parasitic}.
 
-Our community model takes a complex, high-dimensional population dataset, and offers immediate questions to pursue related to the ecology of specific taxa near MVCO. For instance, in Fig.~\ref{fig:plankton-mvco-theta-stacked} we see that community 4 begins to appear a little earlier each year from 2011, at first appearing only in the spring, and by 2015 persisting throughout the Winter. If we were to only look at the timeseries for the individual taxa, ``mix\_elongated'', ``Guinardia'', and ``Cylindrotheca'' which dominate community 4, this pattern is not obvious at all (See Ground-Truth, Fig.~\ref{fig:plankton-mvco-timeseries}). However, our model highlights that these taxa often co-occur, and that the pattern of co-occurrence shifts over the years.
-
 \begin{figure}
-	\begin{center}
-		\subfloat[]{
-			\includegraphics[width=0.49\columnwidth]{figures/oceans/LogPhi.png}
-			\label{fig:plankton-mvco-phi}
-		}%
-		\subfloat[]{
-			\includegraphics[width=0.49\columnwidth]{figures/oceans/weights.png}
-			\label{fig:plankton-mvco-weights}
-		}
-	\end{center}
+    \begin{center}
+        \subfloat[]{
+            \includegraphics[width=0.49\columnwidth]{figures/oceans/LogPhi.png}
+            \label{fig:plankton-mvco-phi}
+        }%
+        \subfloat[]{
+            \includegraphics[width=0.49\columnwidth]{figures/oceans/weights.png}
+            \label{fig:plankton-mvco-weights}
+        }
+    \end{center}
 
-	\caption{
-		\protect\subref{fig:plankton-mvco-phi} Log-probability of each taxon for each community.
-		\protect\subref{fig:plankton-mvco-weights} Linear regression weight matrix for top-performing community model.
-	}
-	\label{fig:plankton-mvco-supplemental}
+    \caption{
+        \protect\subref{fig:plankton-mvco-phi} Log-probability of each taxon for each community.
+        \protect\subref{fig:plankton-mvco-weights} Linear regression weight matrix for top-performing community model.
+    }
+    \label{fig:plankton-mvco-supplemental}
 \end{figure}
+
+Our community model takes a complex, high-dimensional population dataset, and offers immediate questions to pursue related to the ecology of specific taxa near MVCO. For instance, in Fig.~\ref{fig:plankton-mvco-theta-stacked} we see that community 4 begins to appear a little earlier each year from 2011, at first appearing only in the spring, and by 2015 persisting throughout the Winter. If we were to only look at the timeseries for the individual taxa, ``mix\_elongated'', ``Guinardia'', and ``Cylindrotheca'' which dominate community 4, this pattern is not obvious at all (See Ground-Truth, Fig.~\ref{fig:plankton-mvco-timeseries}). However, our model highlights that these taxa often co-occur, and that the pattern of co-occurrence shifts over the years.
 
 \section{Predicting presence of missing phytoplankton by their associates} \label{sec:plankton-spatial-search}
 In our second study of IFCB plankton data, we ground our community model by its ability to predict the presence of an artificially held-out plankton taxon from the others, rather than predicting the full distribution from auxillary data \citep{Kalmbach2017a}. Further, in this application we explore spatial phytoplankton classification data, demonstrating our model's ability to capture both the temporal and spatial smoothness aspects of community structure. This work is motivated by a scenario where a plankton ecologist is searching for a particular plankton taxon. If the ecologist deploys IFCB on a ship and periodically collects samples, but never observes the taxon of interest, she requires further information to decide whether to move on or keep collecting samples in the same location. Because IFCB samples are a small volume of water, yet ecologists would like to describe large volumes of ocean that have complex ecosystems, it is very likely that samples will sometimes be deficient in taxa that are, in fact, found near the sample location. Therefore, we propose to model the associations between taxa in such a way that if we disregard the target taxon we can still estimate the community mixture for a location accurately, and consequently predict the presence or absence of the target from its known assocaites.
