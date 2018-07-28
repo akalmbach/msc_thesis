@@ -18,7 +18,22 @@ Beyond the common collapsed encoder issue, the most notable novel requirement fo
 
 \subsection{Categorical Information Boost Autoencoder -- CIB-AE}
 
-In order to learn a representation compatible with topic modelling, we develop a modified CAE, the Categorical Information Boost Autoencoder (CIB-AE), where the encoding can be seen as the parameter of a categorical or multinomial distribution so that it gives an image's word distribution directly. Similar to DNNs used for classification tasks, we simply apply the softmax function to the activations of a standard CNN architecture to produce such a distribution. In doing so, we discretize the feature space by considering each dimension of the representation as a discrete `word', and preserve detail in our model by modelling the full feature distribution directly.
+In order to learn a representation compatible with topic modelling, we develop a modified CAE, the Categorical Information Boost Autoencoder (CIB-AE), where the encoding can be seen as the parameter of a multinomial distribution so that it gives an image's word distribution directly. We consider encoding an image by the normalized histogram of $N$ `words' -- the learned visual primitives which we can use to reconstruct an image -- drawn from this distribution (Fig.~\ref{fig:cibae-words} presents decodings of single words). Similar to DNNs used for classification tasks, we simply apply the softmax function to the activations of a standard CNN architecture to produce such a distribution. In doing so, we discretize the feature space by considering each dimension of the representation as a discrete `word', and preserve detail in our model by modelling the full feature distribution directly.
+
+\begin{figure}
+    \subfloat[][]{
+        \includegraphics[width=0.3\textwidth]{figures/ptz/words_spatial}
+        \label{fig:words-spatial}
+    }
+    \subfloat[][]{
+        \includegraphics[width=0.6\textwidth]{figures/ptz/top_words}
+        \label{fig:words-top}
+    }
+    \caption{CIB-AE decodings of single `words', \emph{ie.} one-hot encoding vectors. An image is reconstructed as a normalized word-histogram.
+             \protect\subref{fig:words-spatial} 512 words are nearly duplicated at $4 \times 4$ positions within the image.
+             \protect\subref{fig:words-top} The 128 most common words (shown in their center position).}
+    \label{fig:cibae-words}
+\end{figure}
 
 Through the Dirichet priors on topics and topic-word distributions, LDA descendants such as the spatio-temporal topic model make the implicit assumption that documents have sparse word distributions. Although we do not specify exactly how sparse such a sparse mixture of sparse multinomials is, we have found in practice that simply renormalizing the features of conventional autoencoders produces word-distributions that are too uniform to be modelled productively by LDA. Therefore, CIB-AE employs an additional regularization term in its loss,
 \begin{equation}
@@ -46,23 +61,6 @@ L_{CIB} \approx \mathcal{L}_{CIB} = \frac{1}{M} \left( \sum_{i=1}^M \frac{(I_m -
 where $|I|$ denotes the (fixed) number of pixel for an input image. In other words our loss is the MSE plus the average entropy of all encodings, minus the entropy of the average encoding. We find in practice that when the image space is normalized to the range $[-a,a]$, $\lambda = \frac{(2a)^2}{\log V}$ is a good choice, where $V$ is the dimension of the encodings \footnote{Note $\log V$ is the maximum possible entropy for a categorical distribution of dimension $V$, so this choice represents letting the MSE and MI terms have `equal' weight when both are in their worst cases}.
 
 Our specific choice of architecutre is inspired by the feature layers of VGG \citep{Simonyan14c}. In particular, following the approach of Segnet \citep{BadrinarayananK15} we choose a VGG-like encoder, with a symmetric decoder of transposed convolutional layers. This style of encoder uses a sequence of convolution `blocks', which each ultimately either downsample (Max Pool) or upsample (Nearest Neighbor) the activations by a factor of two. We add an additional dropout and an additional softmax layer to the encodings to constrain the real-valued activations of a Segnet style encoding to a simplex. Our feature representation downsamples the image spatially by a factor of 32, while producing a 512 channel feature activation for each spatial region. All experiments are conducted with $128 \times 128 \times 3$ input images, resulting in $4 \times 4 \times 512 = 8192$ dimensional encodings distributions. The full details of our architecture are found in App.~\ref{ch:cibae-arch}, however we emphasize that by adding these two extra layers and the additional loss term, our approach can be transferred to many domains and existing autoencoder architectures.
-
-\begin{figure}
-    \centering
-    \subfloat[][]{
-        \includegraphics[width=0.3\textwidth]{figures/ptz/words_spatial}
-        \label{fig:words-spatial}
-    }
-    \subfloat[][]{
-        \includegraphics[width=0.6\textwidth]{figures/ptz/top_words}
-        \label{fig:words-top}
-    }
-    \label{fig:cibae-words}
-    \caption{CIB-AE decodings of single `words', \emph{ie.} one-hot encoding vectors.
-             \protect\subref{fig:words-spatial} 512 words are nearly duplicated at $4 \times 4$ positions within the image.
-             \protect\subref{fig:words-top} The 128 most common words (shown in their center position).}
-
-\end{figure}
 
 \section{Spatial topic prediction model}
 
@@ -118,13 +116,21 @@ R_P =&
 \end{bmatrix}
 \end{split}
 \end{equation}
-Using the fov $A = A_0/Z$ and output image resolution, we represent the output pixel locations as pan-tilt rotations from the center $P$, $T$. Then, projection proceeds as rotation by $R$ and a lookup in the full panorama image for each pixel in the output image. In all our experiments we consider a base fov of 76 deg and zoom factors $Z \in (1, 12]$, similar to a standard commodity camera. Further, to avoid wrapping angles, we consider only $T \in [-60, 60]$ and $P \in [-120, 120]$ deg (SUN360 is designed so that the horizon is horizontal and vertically centered in all panoramas).
+Using the fov $A = A_0/Z$ and output image resolution, we represent the output pixel locations as pan-tilt rotations from the center $P$, $T$. Then, projection proceeds as rotation by $R$ and a lookup in the full panorama image for each pixel in the output image. In all our experiments we consider a base fov of 76 deg and zoom factors $Z \in [1, 12]$, similar to a standard commodity camera. Further, to avoid wrapping angles, we consider only $T \in [-60, 60]$ and $P \in [-120, 120]$ degrees (SUN360 is designed so that the horizon is horizontal and vertically centered in all panoramas).
 
 \subsection{Place-specific autoencoder}
 
 A key advantage of the topic-model based approach is that it can be trained online, whereas this is not practical for large deep-networks. This means that rather than learning a single model which aims to produce a low-dimensional embedding of all possible images, our robotic camera system can learn a new, place specific model, and is thus required to represent a vastly simpler space of images.
 
-Our approach delegates learning the globally-salient image embedding to the CIB-AE. In particular, we trained our feature model using epochs of 5000 random poses from 80 random SUN360/street panoramas. We found that choosing a new set of random training views for each epoch was crucial, however we kept a validation set fixed throughout training. The perspective projection described in the previous section is time consuming for high-resolution images, especially for those that do not fit in GPU memory. Therefore we trained for 175 epochs on random rectangular crops from the warped panorama images, and then 25 more epochs on projections to fine-tune the results. We achieved our results using the adaptive learning rate optimizer Adam~\citep{KingmaAdam}, however found that a learning rate decay by a factor of 0.9 every 10 epochs was also necessary. Example input images and their autoencoded counterparts can be seen in Fig.~\ref{fig:cibae_encodings}. We found the mean entropy of image encodings from 1000 random poses from the test set to be 2.335 nats \footnote{While bits is the unit for information measured by entropy using $log_2$, nats is the unit when the entropy is calculated using $ln$}, or approximately equivalent to a uniform PMF over just 11 dimensions. On the other hand, the entropy of the mean encoding distribution from these 1000 examples was 8.769 nats, whereas the maximum possible entropy where all feature dimensions were used uniformly would have had an entropy of 9.011 nats.
+Our approach delegates learning the globally-salient image embedding to the CIB-AE. In particular, we trained our feature model using epochs of 5000 random views from 80 random SUN360/street panoramas. We found that choosing a new set of random training views for each epoch was crucial, however we kept the validation set fixed throughout training. The projection described in the previous section is time consuming for high-resolution images, especially for those that do not fit in GPU memory. Therefore we trained for 175 epochs on random square crops from the warped panorama images, and then 25 more epochs on projections to fine-tune the results. We achieved our results using the adaptive learning rate optimizer Adam~\citep{KingmaAdam}, however found that a learning rate decay by a factor of 0.9 every 10 epochs was also necessary. Example input images and their autoencoded counterparts can be seen in Fig.~\ref{fig:cibae_encodings}. We found the mean entropy of image encodings from 1000 random views from the test set to be 6.170 nats \footnote{While bits is the unit for information measured by entropy using $log_2$, nats is the unit when the entropy is calculated using $ln$}, or approximately equivalent to a uniform PMF over just 470 dimensions. On the other hand, the entropy of the mean encoding distribution from these 1000 examples was 8.192 nats, whereas the maximum possible entropy where all feature dimensions were used uniformly would have had an entropy of 9.011 nats.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/ptz/word_frequency}
+    \caption{Word-distribution, sorted by frequency, of the average encoding over 1000 test images (heavy black line) and normalized
+             word-histograms for 3 random images (colored lines). A uniform histogram over the 8192 dimensions (dashed black line) represents the ideal average encoding and the worst-case individual encoding.}
+    \label{fig:cibae-words-distribution}
+\end{figure}
 
 \begin{figure}
     \centering
@@ -137,11 +143,11 @@ We train our view-predictor by alternating between observing new encoding distri
 
 When the image corresponding to the new view is extracted its word distribution is computed based on our trained CIB-AE. Because our Gibbs sampling inference method samples from the posterior for the topic assignment of a single word given all the others, it is necessary to discretize the encoding distribution rather than work with it directly. Note that despite an encoding dimension of 8192, it is possible to use a relatively small number of discrete observations without losing detail because individual images have low entropy encodings. In our experiments we define a constant `document' size of 2000 words per image; initial experimentation showed some degradation of performance below this level and little improvement above, however clearly the document size defines a tradeoff between the required number of sampling iterations and the amount of detail modelled.
 
-We choose a spatio-temporal topic model with $K = 25$ topics and neighborhoods of size 10 deg $\times$ 20 deg $\times$ 6 (tilt $\times$ pan $\times$ zoom). This neighborhood size choice corresponds to the intuition that environments are semantically `smoother' in pan than tilt, and much smoother while zooming than moving the camera. We chose concentration parameter values $\alpha = 0.2,~\beta = 0.2$. We performed extensive cross validation to select these hyerparameter values values and certain other choices were found to perform much better for particular environments, however we did not find a combination of hyperparemeter values that was definitively much more performant than the others on average.
+We choose a spatio-temporal topic model with $K = 25$ topics and neighborhoods of size 10 degrees $\times$ 20 degrees $\times$ 6 (tilt $\times$ pan $\times$ zoom). This neighborhood size choice corresponds to the intuition that environments are semantically `smoother' in pan than tilt, and much smoother while zooming than moving the camera. We chose concentration parameter values $\alpha = 0.2,~\beta = 0.2$. We performed extensive cross validation to select these hyerparameter values values and certain other choices were found to perform much better for particular environments, however we did not find a combination of hyperparemeter values that was definitively much more performant than the others on average.
 
 \subsection{Results}
 
-Since we aim to demonstrate a real-time system that can learn about its surroundings relatively quickly, we stop learning after 50 observations. As a first inquiry into what the model has learned, we directly decode the MAP topic distributions $\hat{\Phi}$ (see Eqn.~\ref{eqn:mle_map_thetaphi}) by passing them through the CIB-AE decoder (See Figs.~\ref{fig:pano-0-topics},\ref{fig:pano-1-topics},\ref{fig:pano-2-topics}). Most other applications of visual topic models employ non-invertible feature functions and choose to inspect topics by looking at the most representative training images. To our knowledge, this is the first application of a visual topic model where the topics can be fully decoded and inspected directly as images.
+Since we aim to demonstrate a real-time system that can learn about its surroundings relatively quickly, we stop learning after 50 observations. As a first inquiry into what the model has learned, we directly decode the MAP topic distributions $\hat{\Phi}$ (using Eqn.~\ref{eqn:mle_map_thetaphi}) by passing them through the CIB-AE decoder (See Figs.~\ref{fig:pano-0-topics},\ref{fig:pano-1-topics},\ref{fig:pano-2-topics}). Most other applications of visual topic models employ non-invertible feature functions and choose to inspect topics by looking at the most representative training images. To our knowledge, this is the first application of a visual topic model where the topics can be fully decoded and inspected directly as images.
 
 In addition, prediction with our spatial topic prior model is extremely efficient, so we are able to predict the topic priors for 10,000 random $P,T,Z$ views. In Figs.~\ref{fig:pano-0-map}, ~\ref{fig:pano-1-map}, and ~\ref{fig:pano-2-map} we present the resulting topic prior maps (one scatter plot per topic, in the same arrangement as the topic images), with the point $x_i$ omitted for topic $k$ if $\theta(x_i)_k < 0.01$, blue indicating $\theta(x)_k = 0.01$ and red $\theta(x)_k = 1$. Together, the decoded topics and view-topic maps provide an evocative graphical representation of how low-level textures combine into a higher level scene structure. After training, we collected 50 more views along with their inferred MAP topic priors (without performing any more refinement of $\Phi$). Among these observed views for each of the 35 test panoramas, we found $D_{JS}[\theta(x), \hat{\theta}]$ to be 0.1953 nats, while $D_{JS}[\mathrm{Unif}(K), \hat{\theta}]$ was on average 0.4122 nats\footnote{Recall $0 \leq D_{JS} \leq \ln(2) \approx 0.6931$}. This indicates that the topic mapping procedure is imperfect as is expected because of its weak geometric assumptions, nevertheless that it is better than a trivial strategy.
 
@@ -225,7 +231,7 @@ In addition, we trained the previously discussed vector-quantized variational au
 
 For the baseline approaches, we apply a similar energy-based prediction model as for the topic-priors, however as the encodings are not probability distributions, we mix them by performing the weighted sum directly rather than in log-probability space. In addition, the cross-validation metric for $w$ is the MSE of the predicted encodings rather than $D_{JS}$. Note that the baselines are not trained with spatial information, so we would not expect this method to achieve the same performance as with the spatially smooth topic model.
 
-Fig.~\ref{fig:encoding-obs-strip} shows examples of the autoencoding performance of the various systems through their 25 dimensional representations. The leftmost column is the observed image and the second column is the CIB-AE autoencoding of that image. The subsequent columns is the decoded neighborhood-word distribution, the VQ-VAE autoencoding, and the CAE autoencoding. The CAE is not able to capture any detail in this regime, the gray images seen are characteristic of the encoder collapse problem mentioned previously. The VQ-VAE, unsurprisingly because of its high-spatial resolution and low feature dimensionality, captures the spatial structure of the image relatively well, but loses much of the color and distorts the texture. Finally, our approach is competetive with the VQ-VAE, featuring images that are more spatially distorted, but interestingly, that enhance the color contrast of its input images. Fig.~\ref{fig:encoding-pred-strip} is similar, however it shows unobserved views, predicted through the topic prediction model.
+Fig.~\ref{fig:encoding-obs-strip} shows examples of the autoencoding performance of the various systems through their 25 dimensional representations. The leftmost column is the observed image and the second column is the CIB-AE autoencoding of that image. The subsequent columns are the decoded neighborhood-word distribution, the VQ-VAE autoencoding, and the CAE autoencoding. The CAE is not able to capture any detail in this regime, the gray images seen are characteristic of the encoder collapse problem mentioned previously. The VQ-VAE, unsurprisingly because of its high-spatial resolution and low feature dimensionality, captures the spatial structure of the image relatively well, but loses much of the color and distorts the texture. Finally, our approach is competetive with the VQ-VAE, featuring images that are more spatially distorted, but interestingly, that enhance the color contrast of its input images. Fig.~\ref{fig:encoding-pred-strip} is similar, however it shows unobserved views, predicted through the topic prediction model.
 
 \begin{figure}
     \begin{center}
@@ -245,6 +251,8 @@ Fig.~\ref{fig:encoding-obs-strip} shows examples of the autoencoding performance
 
 Fig.~\ref{fig:vs_vqvae} shows the RMSE for observed topic encodings and predicted topic priors compared to the real images at the corresponding views. The low extent of the CAE RMSE whisker reveals that the conservative collapsed strategy of consistently predicting uniform grayish images is not necessarily bad in terms of pure pixel error, drawing out an important flaw of the pixel error as a performance measure at this level of compression. Nevertheless, to the extent that the RMSE distributions measure performance in our view prediction task, the data confirm our qualitative assesment that our method performs approximately as well as the VQ-VAE on average. Further, the more colorful, highher contrast images produced by our method are reflected by its higher variance than the more conservative VQ-VAE approach which tends to encode roughly the right shape, but obscure much of the color and texture.
 
+\todo[inline]{Probably need more discussion here, possibly acknowledging limitations more head-on}
+
 \begin{figure}
     \begin{center}
     \subfloat[]{
@@ -258,7 +266,7 @@ Fig.~\ref{fig:vs_vqvae} shows the RMSE for observed topic encodings and predicte
     \end{center}
     \caption{ Performance comparison of our topic prior map with a VQ-VAE and a standard CAE.
     \protect\subref{fig:vs_vqvae_obs} Reconstruction performance for observed images (held out of training),
-    \protect\subref{fig:vs_vqvae_pred} View prediction performance after training. The dashed line shows the median reconstruction error of the CIB-AE on this dataset. The box in this plot represents the interquartile range, while the whiskers represent the range of typical data (2 times IQR). RMSEs are computed for each image with respect to pixel values in the range [0,255].
+    \protect\subref{fig:vs_vqvae_pred} View prediction performance after training. The dashed line shows the median reconstruction error of the CIB-AE on this dataset. The box in this plot represents the interquartile range, while the whiskers represent the range of typical data (1.5 times IQR). RMSEs are computed for each image with respect to pixel values in the range [0,255].
     }
     \label{fig:vs_vqvae}
 \end{figure}
@@ -269,7 +277,7 @@ A second outcome of our work is a tool for exploring views in an environment thr
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/ptz/interaction.png}
-    \caption{Screenshot of visual topic-mixture search interaction. Counter-clockwise from Top-left: Direct decodings of 25 topics; numbers in each decoded topic indicate the proportion of the target mixture given to that topic. Decoding of the target-mixture. Sample from the view with the closest topic distribution given by our spatial prediction model: topic div gives the divergence between the predicted encoding and the target encoding. True image at the closest topic distribution. Demo video at \url{http://cim.mcgill.ca/~akalmbach/thesis/interaction_1.mp4}}
+    \caption{Screenshot of visual topic-mixture search interaction. Counter-clockwise from Top-left: Direct decodings of 25 topics; numbers in each decoded topic indicate the proportion of the target mixture given to that topic. Decoding of the target-mixture. Sample from the view with the closest topic distribution given by our spatial prediction model: topic div gives the divergence between the predicted encoding and the target encoding. True image at the closest topic distribution. Demo video at \url{http://cim.mcgill.ca/~akalmbach/thesis/demos.html}}
     \label{fig:interaction}
 \end{figure}
 
@@ -283,9 +291,5 @@ We experimented with using GP-based upper confidence bounds on both the cross-en
 \subsection{Getting more from geometry and training other feature function}
 Of note is the level of performance our model is able to achieve with a very simplistic geometric model. We use a Euclidean distance to place a prior on the similarity between views in both the topic model and the spatial prediction model. Clearly, however, there is more information to be gained from geometry in this problem. For instance, our feature does contain spatial information, so an edge in one location and the same edge translated or rotated to another location do not necessarily have similar encodings. This means that the natural categories in a panorama may need to be described by multiple very location specific topics with our model. Further, the spatial prediction model could benefit from more sophisticated geometry. A similar operation to our projection of rectangular panorama images to rectified views could be used to ensure that training images are used to fill in information for all overlapping views. Even the simplpest case of upsampling the center of a wide fov image to get information about a more zoomed in view would significantly improve our predictions.
 
-\todo[inline]{Supervised learning for a feature function. As an alternative, words could be used to represent something other than spatial objects that may fit better with the spatial smoothness prior.}
-
 \subsection{End-to-End Variational LDA Autoencoder}
 While the CIB-AE provides a slight modifications that can be made to many standard networks to produce encodings roughly compatible with the Dirichlet prior of LDA, it is natural to ask whether the full model can be learned end-to-end, and fine-tuned for particular environments instead of training a separate model. In fact, \citep{srivastava2017autoencoding} explores implementing the LDA prior for the latent space of a Variational autoencoder, and although the Dirichlet distribution resists exact reparameterization with a simple distribution as is used in other Variational autoencoders, they use a Laplace approximation to achieve comparable results to the standard mean-field variational approximation with much more flexibility. Although the extra dependencies in the spatio-temporal topic model are not compatible with the reparameterization used, we envision pre-training an LDA inference network similar to \citet{srivastava2017autoencoding} similar to our CIB-AE training procedure, and then using the resulting word encoder-decoder along with the Gibbs sampler spatio-temporal topic model, which could be initialilzed from the learned $\Phi$ matrix of the non-spatial topic model.
-
-\todo[inline]{Recurrent autoencoder features}
