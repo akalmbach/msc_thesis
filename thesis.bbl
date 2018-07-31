@@ -426,4 +426,10 @@ Xiao, J., K.~A. Ehinger, A.~Oliva, and A.~Torralba (2012).
 \newblock See also supplemental material on the geometry
   \url{http://people.csail.mit.edu/jxiao/SUN360/supp_final/panorama.pdf}.
 
+\bibitem[\protect\citeauthoryear{Ziebart, Maas, Bagnell, and Dey}{Ziebart
+  et~al.}{2008}]{ziebart2008maximum}
+Ziebart, B.~D., A.~L. Maas, J.~A. Bagnell, and A.~K. Dey (2008).
+\newblock Maximum entropy inverse reinforcement learning.
+\newblock In {\em AAAI}, Volume~8, pp.\  1433--1438. Chicago, IL, USA.
+
 \end{thebibliography}

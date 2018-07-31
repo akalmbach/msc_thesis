@@ -38,18 +38,14 @@ Nevertheless, this detail comes at the price of intuitive, comprehensive models 
 
 We hypothesize that by taking sparsity and spatio-temporal smoothness into account, a spatio-temporal topic model will be able to produce such an account without sacrificing interpretability. Specifically, the topic model's discrete-valued feature function is taken to be the occurrence of each taxon, and neighborhoods are taken to be the temporal or spatio-temporal windows in which the observations were made by IFCB. We interpret the resulting word-topic distributions as `communities' -- probabilistic groupings of plankton taxa that tend to co-occur. Under this interpretation, the topic-neighborhood distributions describe the mixture of communities found in a given location.
 
-Similar to previous examples in this thesis, we expect that each community should be mainly comprised of only a few taxa, that for any location few communities should be present, and that within some neighborhood the distribution of communities should be similar. By applying priors which prefer models that respect these conditions, we ensure that our community model will be not only accurate, but also easy to interpret.  As we have seen, the (spatio-) temporal topic model can be used to estimate the posterior probability of topic assignments $P(\boldsymbol{z} | \boldsymbol{w})$ via the collapsed Gibbs sampler update (in Eqn.~\ref{eqn:posterior}), and further that given a set of topic assignments, the posterior distributions for $\Theta$ and $\Phi$ are given by $Dir(\alpha + \boldsymbol{N}_{g(x)}^{1:K})$ and $Dir(\beta + \boldsymbol{N}_k^{1:V})$ respectively. Thus, the maximum likelihood estimates for $\Theta$ and $\Phi$ are identical to those used in the predictive distribution, and \emph{maximum a posteriori} (MAP) estimates $\hat{\Theta}, \hat{\Phi}$ can be easily computed as well:
-\begin{equation} \label{eqn:mle_map_thetaphi}
-\begin{aligned}
-\mathbb{E}[\Theta_{g(x),k} | \boldsymbol{z}] &= \frac{N^k_{g(x)} + \alpha}{\sum_{j=1}^K N^j_{g(x)} + \alpha},
-\quad &\hat{\Theta}_{g(x),k} &= \frac{N^k_{g(x)} + \alpha - 1}{\sum_{j=1}^K N^j_{g(x)} + \alpha - 1}\\
-\mathbb{E}[\Phi_{k,w_i} | \boldsymbol{z}] &= \frac{N^{w_i}_k + \beta}{\sum_{v=1}^V N^v_k + \beta},
-\quad &\hat{\Phi}_{k,w_i} &= \frac{N^{w_i}_k + \beta - 1}{\sum_{v=1}^V N^v_k + \beta - 1}
-\end{aligned}
-\end{equation}
-\todo[inline]{The MAP estimate assumes that $N + \alpha > 1$, however if $N=0$ we set the probability to 0 and disregard this dimension in the summation. Where to put this comment?}
+Similar to previous examples in this thesis, we expect that each community should be mainly comprised of only a few taxa, that for any location few communities should be present, and that within some neighborhood the distribution of communities should be similar. By applying priors which prefer models that respect these conditions, we ensure that our community model will be not only accurate, but also easy to interpret.  As we have seen, the (spatio-) temporal topic model can be used to estimate the posterior probability of topic assignments $P(\boldsymbol{z} | \boldsymbol{w})$ via the collapsed Gibbs sampler update (in Eqn.~\ref{eqn:posterior}), and further that given a set of topic assignments, the posterior distributions for $\Theta$ and $\Phi$ are given by $Dir(\alpha + \boldsymbol{N}_{g(x)}^{1:K})$ and $Dir(\beta + \boldsymbol{N}_k^{1:V})$ respectively. The mean of a Dirichlet distribution is its parameter normalized, so the maximum likelihood values, denoted $\hat{\Theta}$ and $\hat{\Phi}$ are trivial to recover
 
-To tie our communities back to the domain of phytoplankton observations, we consider learning the community model, but also additional means of estimating the MAP community distributions when the phytoplankton observations themselves are not available. Given some estimate of MAP community distributions $\check{\theta} \approx \hat{\theta}$, we can in turn estimate the distribution of phytoplankton taxa
+\begin{equation} \label{eqn:mle_thetaphi}
+\hat{\Theta}_{g(x), k} = \frac{N^k_{g(x)} + \alpha}{\sum_{j=1}^K N^j_{g(x)} + \alpha}, \quad
+\hat{\Phi}_{k,w_i} = \frac{N^{w_i}_k + \beta}{\sum_{v=1}^V N^v_k + \beta},
+\end{equation}
+
+To tie our communities back to the domain of phytoplankton observations, we consider learning the community model, but also additional means of estimating the MLE community distributions when the phytoplankton observations themselves are not available. Supposing we have some method to estimate of these community distributions $\check{\theta} \approx \hat{\theta}$, we can in turn estimate the distribution of phytoplankton taxa
 \begin{equation} \label{eqn:word-estimate}
 P(w = v | \theta, \Phi) = \sum_{k=0}^K \theta_k \Phi_{k,v} \approx \sum_{k=0}^K \check{\theta}_k \hat{\Phi}_{k,v}
 \end{equation}
@@ -74,7 +70,7 @@ P(z_i = k | \boldsymbol{z_{-i}}) =
 \section{Learning communities that are explained by the environment} \label{sec:plankton-seasonal}
 Our first study involving IFCB plankton data aims at learning an interpretable community model for a fixed-location deployment at Martha's Vineyard Coastal Observatory (MVCO), one mile off the south-shore of Martha's Vineyard, MA \citep{Kalmbach2017}. In addition to an IFCB, MVCO has a suite of other sensors, enabling inquiry into the relationships between phytoplankton abundance and environment variables including oceanographic and meteorological factors such as dissolved $\mathrm{0}_2$ content, salinity, air and water temperature, and rainfall. While the combination of these two data sources could be used as the basis to learn intricate models of the precise relationship between each taxon and the environment, in this work we show that by first accounting for the associations between taxa, our method can capture most of the same information while requiring minimal domain knowledge.
 
-We propose to use a simple simple linear-ridge regressor to predict the distribution of phytoplankton taxa from environment variables. We first train the community model and compute the MAP estimates $\hat{\Theta}$ and $\hat{\Phi}$. Because of the prior imposed by our model, $\hat{\Theta}$ is relatively low-dimensional, sparse, and temporally smooth in comparison to the full phytoplankton distributions. Therefore, we hypothesize that estimating the communities and predicting the phytoplankton taxa by Eqn.~\ref{eqn:word-estimate} will produce more reliable predictions than a direct regression technique.
+We propose to use a simple simple linear-ridge regressor to predict the distribution of phytoplankton taxa from environment variables. We first train the community model and compute the MLE estimates $\hat{\Theta}$ and $\hat{\Phi}$. Because of the prior imposed by our model, $\hat{\Theta}$ is relatively low-dimensional, sparse, and temporally smooth in comparison to the full phytoplankton distributions. Therefore, we hypothesize that estimating the communities and predicting the phytoplankton taxa by Eqn.~\ref{eqn:word-estimate} will produce more reliable predictions than a direct regression technique.
 
  In addition, this regression task provides complementary feedback to the topic model, ensuring that the final community model is interpretable in addition to accurate. For this application, instead of using the probability of held-out data as the cross-validation metric, we propose to use the agreement ($1/D_{KL}$) between the predicted taxon distributions and the ground-truth taxon distribution. By doing so, we ensure that the maximum likelihood taxon distributions given the topics closely resemble the true taxon distributions, but also that the topic distributions themselves can be explained simply in terms of the chosen environment variables. For this reason, rather than choosing a complex regression model, which may have better overall performance on the final predictions, we take an unsophisticated linear ridge approach to regression.
 
@@ -218,19 +214,15 @@ In our second study of IFCB plankton data, we ground our community model by its 
 
 We would like to estimate the probability of observing a falsely-missing target taxon $v^\star$, based on the observed distribution of the $V-1$ other taxa.
 We assume that the taxon is not systematically missing, in other words that we can collect a training set at some other locations comprised of all $V$ taxa.
-Then given this training set, we learn the topic assignments and MAP priors $\hat{\Theta}$ and $\hat{\Phi}$ as in the other examples in this thesis. At
-test-time we disregard the target taxon, assuming it is falsely-missing. To address this we consider the topics excluding $v^\star$ to be the MAP value of the Dirichlet over the other $V-1$ taxa
+Then given this training set, we learn the topic assignments and MLE priors $\hat{\Theta}$ and $\hat{\Phi}$. At test-time we disregard the target taxon, assuming it is falsely-missing. To address this we consider the topics excluding $v^\star$ as the maximum likelihood of the Dirichlet over the other $V-1$ taxa. In other words, at test time we use topics which ignore the missing taxon:
 \begin{equation}
-P(w = v | z = k, \boldsymbol{w}) \approx \hat{\Phi}_k^{\neg v^\star} \triangleq \frac{N_k^v + \beta - 1}{\sum_{u\neq v^\star} N_k^u + \beta - 1}
+P(w = v | z = k, \boldsymbol{w}) \approx \hat{\Phi}_k^{-v^\star} \triangleq \frac{N^{w_i}_k + \beta}{\sum_{u \neq v^\star} N^u_k + \beta},
 \end{equation}
 
-Next, we obtain topic assignments $\boldsymbol{z_{\neg v^\star}}$ by substituting $\hat{\Phi}_k^{\neg v^\star}$ for $\Phi$ in the predictive distribution Eqn.~\ref{eqn:posterior}. These topic assignments allow us to compute an approximation of the true MAP topic priors,
+Next, we obtain topic assignments $\boldsymbol{z_{- v^\star}}$ by substituting $\hat{\Phi}_k^{- v^\star}$ for $\Phi$ in the predictive distribution Eqn.~\ref{eqn:posterior}. In the iterative process of sampling topic assignments, we fix $\hat{\Phi}_k^{-v^\star}$, and only update topic assignments for new observations based using the `target defficient' topic assignment counts. These define the approximate MLE topic priors $\check{\Theta}_{g(x)}$. Finally, we estimate the proportion of the data which would have been made of the target class using the original MLE topic matrix
 \begin{equation}
-\check{\Theta}_{g(x),k} = \frac{N^k_{g(x)} + \alpha - 1}{\sum_{j=1}^K N^j_{g(x)} + \alpha - 1}
+P(w_x = v^\star) = \sum_{k=0}^K \check{\Theta}_{g(x),k} \hat{\Phi}_{k,v^\star}
 \end{equation}
-with the counts now being over $\boldsymbol{z_{\neg v^\star}}$ in place of the true topic assignments $\boldsymbol{z}$.
-Finally, we estimate the proportion of the data which would have been made of the target class using the original MAP topic matrix
-as $\sum_{k=0}^K \check{\Theta}_{.,k} \hat{\Phi}_{k,v^\star}$ .
 
 \subsection{US Atlantic coast hotspot prediction experiment}
 
