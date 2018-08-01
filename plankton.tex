@@ -33,12 +33,14 @@ Marine scientists have long used techniques to measure the amount of chlorophyll
 
 To meet the gap in observational capability that includes taxonomic resolution, Sosik and Olson have developed the automated, submersible Imaging FlowCytobot (IFCB, Fig.~\ref{fig:ifcb-device})~\citep{Olson2007a}. IFCB acts as an autonomous underwater microscope, collecting water samples and imaging small droplets at high resolution ($\sim$\SI{1}{\micro\meter}). The coupled analysis system \citep{Sosik2007} is able to detect and crop phytoplankton within these images (See Fig.~\ref{fig:ifcb-collage}). Many of these contain sufficient detail to be automatically classified to the genus or species level by a random-forest based system \citep{Sosik2016}. IFCB is designed to serially sample ocean water and perform detection and classification for long periods of time (weeks to years) with minimal manual intervention.
 
-Sosik, Olson, and other IFCB users have collected impressively detailed datasets of plankton taxon (\emph{ie.} species or genus) abundance, both with long-term fixed location IFCB deployments, and over large areas by deploying IFCB underway on a ship.\footnote{Available online at \url{http://ifcb-data.whoi.edu/mvco/}}
-Nevertheless, this detail comes at the price of intuitive, comprehensive models using classic statistical techniques. To our knowledge, no other work has attempted to derive understanding about the interactions between multiple taxa in this dataset, nonetheless all of them considered at once.
+Sosik, Olson, and other IFCB users have collected impressively detailed datasets of plankton taxon (i.e. species or genus) abundance, both with long-term fixed location IFCB deployments, and over large areas by deploying IFCB underway on a ship.\footnote{Datasets available online at \url{http://ifcb-data.whoi.edu/mvco/}}
+Nevertheless, this level of detail comes at the price of intuitive, comprehensive models using classic statistical techniques. To our knowledge, no other work has attempted to derive understanding about the interactions between multiple taxa in this dataset, nonetheless all of them considered together.
 
-We hypothesize that by taking sparsity and spatio-temporal smoothness into account, a spatio-temporal topic model will be able to produce such an account without sacrificing interpretability. Specifically, the topic model's discrete-valued feature function is taken to be the occurrence of each taxon, and neighborhoods are taken to be the temporal or spatio-temporal windows in which the observations were made by IFCB. We interpret the resulting word-topic distributions as `communities' -- probabilistic groupings of plankton taxa that tend to co-occur. Under this interpretation, the topic-neighborhood distributions describe the mixture of communities found in a given location.
+We hypothesize that by taking sparsity and spatio-temporal smoothness into account, a spatio-temporal topic model will be able to produce such an account without sacrificing interpretability. Specifically, the topic model's discrete-valued feature function is taken to be the occurrence of each taxon, and neighborhoods are taken to be the temporal or spatio-temporal windows in which the observations were made by IFCB. We interpret the resulting word-topic distributions as \emph{communities} -- probabilistic groupings of plankton taxa that tend to co-occur. Under this interpretation, the topic-neighborhood distributions describe the mixture of communities found in a given location.
 
-Similar to previous examples in this thesis, we expect that each community should be mainly comprised of only a few taxa, that for any location few communities should be present, and that within some neighborhood the distribution of communities should be similar. By applying priors which prefer models that respect these conditions, we ensure that our community model will be not only accurate, but also easy to interpret.  As we have seen, the (spatio-) temporal topic model can be used to estimate the posterior probability of topic assignments $P(\boldsymbol{z} | \boldsymbol{w})$ via the collapsed Gibbs sampler update (in Eqn.~\ref{eqn:posterior}), and further that given a set of topic assignments, the posterior distributions for $\Theta$ and $\Phi$ are given by $Dir(\alpha + \boldsymbol{N}_{g(x)}^{1:K})$ and $Dir(\beta + \boldsymbol{N}_k^{1:V})$ respectively. The mean of a Dirichlet distribution is its parameter normalized, so the maximum likelihood values, denoted $\hat{\Theta}$ and $\hat{\Phi}$ are trivial to recover
+Similar to previous examples in this thesis, we expect that each community should be mainly comprised of only a few taxa, that for any location few communities should be present, and that within some neighborhood the distribution of communities should be similar. By applying priors which prefer models that respect these conditions, we ensure that our community model will be not only accurate, but also easy to interpret.
+
+As we have seen, the (spatio-) temporal topic model can be used to estimate the posterior probability of topic assignments $P(\boldsymbol{z} | \boldsymbol{w})$ via the collapsed Gibbs sampler update (in Eqn.~\ref{eqn:posterior}), and further that given a set of topic assignments, the posterior distributions for $\Theta$ and $\Phi$ are given by $Dir(\alpha + \boldsymbol{N}_{g(x)}^{1:K})$ and $Dir(\beta + \boldsymbol{N}_k^{1:V})$ respectively. The mean of a Dirichlet distribution is its parameter normalized, so the maximum likelihood estimate (MLE), denoted $\hat{\Theta}$ and $\hat{\Phi}$ are trivial to recover
 
 \begin{equation} \label{eqn:mle_thetaphi}
 \hat{\Theta}_{g(x), k} = \frac{N^k_{g(x)} + \alpha}{\sum_{j=1}^K N^j_{g(x)} + \alpha}, \quad
@@ -52,11 +54,11 @@ P(w = v | \theta, \Phi) = \sum_{k=0}^K \theta_k \Phi_{k,v} \approx \sum_{k=0}^K 
 
 A final issue in the formulation of our phytoplankton community model is that because these datasets are so unique, to our knowledge no domain research has attempted to define phytoplankton communities, and therefore we do not have strong information about how to set the number of topics $K$. For this reason, instead of fixing $K$ ahead of time, we apply a Dirichlet process (DP) prior on $\theta$ and learn the number of topics from data following the Bayesian non-parametric approach of \citep{Girdhar2016}, (BNP-ROST).
 
-The DP is an infinite-dimensional generalization of the Dirchlet distribution, often used as a prior for infinite mixture models, where the number of components is not known \emph{a priori}. It is parameterized by a probability distribution $G$ with support set $A$, and a positive, real-valued scale parameter $\eta$. It is defined by the property that any finite partition of $A$ (a disjoint, covering set of subsets) is jointly Dirichlet distributed, \emph{ie} for all finite partitions $\{A_0, \ldots, A_r\}$ \citep{Teh2010}
+The DP is an infinite-dimensional generalization of the Dirchlet distribution, often used as a prior for infinite mixture models, where the number of components is not known \emph{a priori}. It is parameterized by a probability distribution $G$ with support set $A$, and a positive, real-valued scale parameter $\eta$. It is defined by the property that any finite partition of $A$ (a disjoint, covering set of subsets) is jointly Dirichlet distributed, i.e. for all finite partitions $\{A_0, \ldots, A_r\}$ \citep{Teh2010}
 \begin{equation}
 H \sim DP(\eta, G) \Rightarrow (H(A_0), \ldots, H(A_r)) \sim Dir(\eta G(A_0),\ldots,\eta G(A_r))
 \end{equation}
-In the Bayesian non-parametric topic model, a DP prior is placed on $\theta$. $A$ is considered to be the set of possible topic assignments for a word, with no limit on the maximum possible value. The key insight is that for any number of topics currently in use, $K$, the distribution over the partition with an element for each of the $K$ topics, plus another for any other possible topic assignment, \emph{ie.} the partition $\{z = 0, z = 1, \ldots, z = K - 1, z \geq K\}$, is a (finite) Dirichlet. We can view this in terms of the `Chinese Restaurant Process' construction, reparameterizing $G$ and $\eta$ in terms of our original symmetric Dirichlet parameter $\alpha$ and the probability $\gamma$ of incrementing the number of topics \citep{jordan2005}. This interpretation leads to a predictive distribution which is only a minor modification from the Dirichlet predictive distribution (Eqn.~\ref{eqn:posterior}):
+In the Bayesian non-parametric topic model, a DP prior is placed on $\theta$. $A$ is considered to be the set of possible topic assignments for a word, with no limit on the maximum possible value. The key insight is that for any number of topics currently in use, $K$, the distribution over the partition with an element for each of the $K$ topics, plus another for any other possible topic assignment, i.e. the partition $\{z = 0, z = 1, \ldots, z = K - 1, z \geq K\}$, is a (finite) Dirichlet. We can view this in terms of the `Chinese Restaurant Process' construction, reparameterizing $G$ and $\eta$ in terms of our original symmetric Dirichlet parameter $\alpha$ and the probability $\gamma$ of incrementing the number of topics \citep{jordan2005}. This interpretation leads to a predictive distribution which is only a minor modification from the Dirichlet predictive distribution (Eqn.~\ref{eqn:posterior}):
 \begin{equation}
 \begin{aligned}
 P(z_i = k | \boldsymbol{z_{-i}}) =
@@ -66,67 +68,45 @@ P(z_i = k | \boldsymbol{z_{-i}}) =
 \end{cases}
 \end{aligned}
 \end{equation}
+where $K$ is incremented whenever some $z=K$ is drawn from the resulting distribution.
 
 \section{Learning communities that are explained by the environment} \label{sec:plankton-seasonal}
 Our first study involving IFCB plankton data aims at learning an interpretable community model for a fixed-location deployment at Martha's Vineyard Coastal Observatory (MVCO), one mile off the south-shore of Martha's Vineyard, MA \citep{Kalmbach2017}. In addition to an IFCB, MVCO has a suite of other sensors, enabling inquiry into the relationships between phytoplankton abundance and environment variables including oceanographic and meteorological factors such as dissolved $\mathrm{0}_2$ content, salinity, air and water temperature, and rainfall. While the combination of these two data sources could be used as the basis to learn intricate models of the precise relationship between each taxon and the environment, in this work we show that by first accounting for the associations between taxa, our method can capture most of the same information while requiring minimal domain knowledge.
 
-We propose to use a simple simple linear-ridge regressor to predict the distribution of phytoplankton taxa from environment variables. We first train the community model and compute the MLE estimates $\hat{\Theta}$ and $\hat{\Phi}$. Because of the prior imposed by our model, $\hat{\Theta}$ is relatively low-dimensional, sparse, and temporally smooth in comparison to the full phytoplankton distributions. Therefore, we hypothesize that estimating the communities and predicting the phytoplankton taxa by Eqn.~\ref{eqn:word-estimate} will produce more reliable predictions than a direct regression technique.
+We propose to use a simple simple linear-ridge regressor to predict the distribution of phytoplankton taxa from environment variables. We first train the community model and compute the MLE $\hat{\Theta}$ and $\hat{\Phi}$. Because of the prior imposed by our model, $\hat{\Theta}$ is relatively low-dimensional, sparse, and temporally smooth in comparison to the full phytoplankton distributions. Therefore, we hypothesize that estimating the communities and predicting the phytoplankton taxa by Eqn.~\ref{eqn:word-estimate} will produce more reliable predictions than a direct regression technique.
 
- In addition, this regression task provides complementary feedback to the topic model, ensuring that the final community model is interpretable in addition to accurate. For this application, instead of using the probability of held-out data as the cross-validation metric, we propose to use the agreement ($1/D_{KL}$) between the predicted taxon distributions and the ground-truth taxon distribution. By doing so, we ensure that the maximum likelihood taxon distributions given the topics closely resemble the true taxon distributions, but also that the topic distributions themselves can be explained simply in terms of the chosen environment variables. For this reason, rather than choosing a complex regression model, which may have better overall performance on the final predictions, we take an unsophisticated linear ridge approach to regression.
+ In addition, this regression task provides complementary feedback to the topic model, ensuring that the final community model is both interpretable and accurate. For this application, instead of using the probability of held-out data as the cross-validation metric, we propose to use the agreement (which we define as $1/D_{KL}$) between the predicted taxon distributions based on environmental factors and the ground-truth taxon distribution. By doing so, we ensure that the maximum likelihood taxon distributions given the topics closely resemble the true taxon distributions, but also that the topic distributions themselves can be explained simply in terms of the chosen environment variables. For this reason, rather than choosing a complex regression model, which may have better overall performance on the final predictions, we take an unsophisticated linear ridge approach to regression.
 
 \subsection{Martha's Vineyard multi-year timeseries experiment}
 We demonstrate our method on a dataset recorded continuously from Jan. 2009 to Jul. 2016 at MVCO. IFCB was configured to automatically sample from 5 ml of surface seawater approximately every 20 min. The classification system generated an average of over 1100 observations per day, distributed over 47 taxa (Fig.~\ref{fig:plankton-mvco-gt}).
 
 We aggregated the observations to produce the taxon distribution for each day during the 7.5 year period, and used this as input to our method. For the regression model, we chose a suite of 18 environment variables from the MVCO ocean data and meteorological data summaries (Fig.~\ref{fig:plankton-mvco-regression-inputs}). In addition to being naively chosen, the environment data features significant gaps and systematic noise due to the practical challenges of long-term ocean sensor deployments. Much of the systematic noise was suppressed by rejecting outliers based on the median absolute deviation of each variable, yet the regression task remains extremely challenging.
 
-% \begin{figure}
-%     \centering
-%     \begin{subfloat}
-%         \centering
-%         \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_gt.png}
-%         \caption{Observed daily taxon log-distributions at Martha's Vineyard Coastal Observatory over 7.5 years.}
-%         \label{fig:plankton-mvco-gt}
-%     \end{subfloat}%
-%     \begin{subfloat}
-%         \centering
-%         \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_hat_topics.png}
-%         \caption{Predicted taxon log-distributions using our community model and regression system.}
-%         \label{fig:plankton-mvco-topic-est}
-%     \end{subfloat}%
-% \end{figure}
-% \begin{figure}
-% 	\ContinuedFloat
-%     \begin{subfloat}
-%         \centering
-%         \includegraphics[width=1.\textwidth]{figures/oceans/taxa_distros_hat_words.png}
-%         \caption{Predicted taxon log-distributions using direct regression on taxon distributions.}
-%         \label{fig:plankton-mvco-word-est}
-%     \end{subfloat}
-%     \caption{}
-%     \label{fig:plankton-mvco}
-% \end{figure}
-
 \begin{figure}
     \centering
-    \subfloat[][]{
-        \includegraphics[width=0.8\textwidth]{figures/oceans/taxa_distros_gt.png}
-        \label{fig:plankton-mvco-gt}
-    }\\
-    \subfloat[][]{
-        \includegraphics[width=0.8\textwidth]{figures/oceans/taxa_distros_hat_topics.png}
-        \label{fig:plankton-mvco-word-est}
-    }\\
-    \ContinuedFloat
-    \subfloat[][]{
+    \begin{subfloat}
         \centering
-        \includegraphics[width=0.8\textwidth]{figures/oceans/taxa_distros_hat_words.png}
+        \includegraphics[width=0.85\textwidth]{figures/oceans/taxa_distros_gt.png}
+        \caption{Observed daily taxon log-distributions at Martha's Vineyard Coastal Observatory over 7.5 years.}
+        \label{fig:plankton-mvco-gt}
+    \end{subfloat}
+    \begin{subfloat}
+        \centering
+        \includegraphics[width=0.85\textwidth]{figures/oceans/taxa_distros_hat_topics.png}
+        \caption{Predicted taxon log-distributions using our community model and regression system.}
         \label{fig:plankton-mvco-topic-est}
-    }
-    \caption{Taxon log-distributions at Martha's Vineyard Coastal Observatory over 7.5 years.
-            \protect\subref{fig:plankton-mvco-gt} Measured.
-            \protect\subref{fig:plankton-mvco-word-est} Predicted based on observed maximum likelihood communities.
-            \protect\subref{fig:plankton-mvco-topic-est} Predicted based on environmental conditions using our communities-based regression system.
-    }
+    \end{subfloat}%
+\end{figure}
+\begin{figure}
+	\ContinuedFloat
+    \centering
+    \begin{subfloat}
+        \centering
+        \includegraphics[width=0.85\textwidth]{figures/oceans/taxa_distros_hat_words.png}
+        \caption{Predicted taxon log-distributions using direct regression on taxon distributions.}
+        \label{fig:plankton-mvco-word-est}
+    \end{subfloat}
+    \caption{}
     \label{fig:plankton-mvco}
 \end{figure}
 
@@ -149,9 +129,9 @@ We demonstrate the utility of our method in comparison to two more standard regr
     \label{fig:plankton-mvco-kl-boxplot}
 \end{figure}
 
-We evaluated the resulting regression systems for all hyperparameter settings as well as the two baseline methods by comparing the predicted taxon distributions to the true distributions on each day in the dataset. Our error measure is the KL-Divergence between the predictions and the held-out distributons. We chose the community model with the lowest average KL-Divergence over all the days in the dataset, ultimately picking a model with 6 active communities. The predicted taxon distributions for this model are shown in Fig.~\ref{fig:plankton-mvco-word-est}.
+We evaluated the resulting regression systems for all hyperparameter settings as well as the two baseline methods by comparing the predicted taxon distributions to the true distributions on each day in the dataset. Our error measure is the KL-Divergence between the predictions and the held-out distributons. We chose the community model hyperparameters settings with the lowest average KL-Divergence over all the days in the dataset, ultimately picking a model with 6 active communities. The predicted taxon distributions for this model are shown in Fig.~\ref{fig:plankton-mvco-word-est}.
 
-Fig.~\ref{fig:plankton-mvco-kl-boxplot} shows the taxon distribution prediction errors for this community model and our two baseline models, broken out by year. The boxes represent the distribution of prediction errors for nearly 365 days in 2009 through 2015, and 172 days in 2016 (nearly 365 because of some small gaps in the taxon count data). Our community model (leftmost for each year) achieved the lowest median error on every year in the dataset. We found that by optimizing the hyperparameters for the regression task, we were able to choose an interpretable representation of the community structure. In contrast, PCA does not feature any prior for temporal smoothness. As a result although its prediction error is on average only a little less accurate than our model's, the sequences of predictions it makes are sometimes implausible, featuring taxon distributions which change much more rapidly than the observed data. We found that both baselines were extremely susceptible to noise in the environment data, on average performing better than expected, but occasionally making extremely poor predictions (Fig.~\ref{fig:plankton-mvco-timeseries}). With our model, the regression problem is of a lower dimensionality than for direct regression, and therefore less susceptible to overfitting. For this reason when both models are presented with the same small amount of training data, our model is more able to avoid large errors for new inputs unlike the training data.
+Fig.~\ref{fig:plankton-mvco-kl-boxplot} shows the taxon distribution prediction errors for this community model and our two baseline models, broken out by year. The boxes represent the distribution of prediction errors for nearly 365 days in 2009 through 2015, and 172 days in 2016 (nearly 365 because of some small gaps in the taxon count data). Our community model (leftmost for each year) achieved the lowest median error on every year in the dataset. We found that by optimizing the hyperparameters for the regression task, we were able to choose an interpretable representation of the community structure. In contrast, PCA does not feature any prior for temporal smoothness. As a result although its prediction error is on average only a little less accurate than our model's, the sequences of predictions it makes are sometimes implausible, featuring taxon distributions that change much more rapidly than the observed data. We found that both baselines were extremely susceptible to noise in the environment data, on average performing better than expected, but occasionally making extremely poor predictions (Fig.~\ref{fig:plankton-mvco-timeseries}). With our model, the regression problem is of a lower dimensionality than for direct regression, and therefore less susceptible to overfitting. For this reason when both models are presented with the same small amount of training data, our model is more able to avoid large errors for new inputs unlike the training data.
 
 \begin{figure}
     \centering
@@ -177,7 +157,7 @@ Fig.~\ref{fig:plankton-mvco-kl-boxplot} shows the taxon distribution prediction 
 \end{figure}
 
 An intriguing result of our community regression model is that nearly all of the magnitude in the weights of the learned regression parameters is either on the day of the year, the water temperature, or the number of plankton classified for a given day (Fig.~\ref{fig:plankton-mvco-weights}). 
-From our regression matrix, we can see that each of the 5 communities has a seasonal niche with which most stongly predicts its presence. We found that the best performing community models showed strong seasonal structure, rather than relying on other variables. This is made evident by the average community distribution for each day of the year over the entire dataset before regression (Fig.~\ref{fig:plankton-mvco-theta-mod}). Note that there are many possible community decompositions, and although our model makes weak assumptions about the temporal smoothness of the communities, it does not have any prior knowledge of the seasonal nature of the data. By performing hyperparameter optimization over the downstream regression task, we were able to select a model with just the right level of sparsity and temporal smoothness to emphasize this seasonal aspect and describe the data in an interpretable way.
+From our regression matrix, we can see that 5 out of 6 communities has a seasonal niche with which most stongly predicts its presence. We found that the best performing community models showed strong seasonal structure, rather than relying on other variables. This is made evident by the average community distribution for each day of the year over the entire dataset before regression (Fig.~\ref{fig:plankton-mvco-theta-mod}). Note that there are many possible community decompositions, and although our model makes weak assumptions about the temporal smoothness of the communities, it does not have any prior knowledge of the seasonal nature of the data. By performing hyperparameter optimization over the downstream regression task, we were able to select a model with just the right level of sparsity and temporal smoothness to emphasize this seasonal aspect and describe the data in an interpretable way.
 
 \begin{figure}
 	\centering
@@ -210,18 +190,20 @@ Another outcome of our experiment is the communities themselves learned by our m
 Our community model takes a complex, high-dimensional population dataset, and offers immediate questions to pursue related to the ecology of specific taxa near MVCO. For instance, in Fig.~\ref{fig:plankton-mvco-theta-stacked} we see that community 4 begins to appear a little earlier each year from 2011, at first appearing only in the spring, and by 2015 persisting throughout the Winter. If we were to only look at the timeseries for the individual taxa, ``mix\_elongated'', ``Guinardia'', and ``Cylindrotheca'' which dominate community 4, this pattern is not obvious at all (See Ground-Truth, Fig.~\ref{fig:plankton-mvco-timeseries}). However, our model highlights that these taxa often co-occur, and that the pattern of co-occurrence shifts over the years.
 
 \section{Predicting presence of missing phytoplankton by their associates} \label{sec:plankton-spatial-search}
-In our second study of IFCB plankton data, we ground our community model by its ability to predict the presence of an artificially held-out plankton taxon from the others, rather than predicting the full distribution from auxillary data \citep{Kalmbach2017a}. Further, in this application we explore spatial phytoplankton classification data, demonstrating our model's ability to capture both the temporal and spatial smoothness aspects of community structure. This work is motivated by a scenario where a plankton ecologist is searching for a particular plankton taxon. If the ecologist deploys IFCB on a ship and periodically collects samples, but never observes the taxon of interest, she requires further information to decide whether to move on or keep collecting samples in the same location. Because IFCB samples are a small volume of water, yet ecologists would like to describe large volumes of ocean that have complex ecosystems, it is very likely that samples will sometimes be deficient in taxa that are, in fact, found near the sample location. Therefore, we propose to model the associations between taxa in such a way that if we disregard the target taxon we can still estimate the community mixture for a location accurately, and consequently predict the presence or absence of the target from its known assocaites.
+In our second study of IFCB plankton data, we ground our community model by its ability to predict the presence of an artificially held-out plankton taxon from the others, rather than predicting the full distribution from auxillary data \citep{Kalmbach2017a}. Further, in this application we explore spatial phytoplankton classification data, demonstrating our model's ability to capture both the temporal and spatial smoothness aspects of community structure.
+
+This work is motivated by a scenario where a plankton ecologist is searching for a particular plankton taxon. If the ecologist deploys IFCB on a ship and periodically collects samples, but never observes the taxon of interest, she requires further information to decide whether to move on or keep collecting samples in the same location. Because IFCB samples are a small volume of water, yet ecologists would like to describe large volumes of ocean that have complex ecosystems, it is very likely that samples will sometimes be deficient in taxa that are, in fact, found near the sample location. Therefore, we propose to model the associations between taxa in such a way that if we disregard the target taxon we can still estimate the community mixture for a location accurately, and consequently predict the presence or absence of the target from its known assocaites.
 
 We would like to estimate the probability of observing a falsely-missing target taxon $v^\star$, based on the observed distribution of the $V-1$ other taxa.
 We assume that the taxon is not systematically missing, in other words that we can collect a training set at some other locations comprised of all $V$ taxa.
-Then given this training set, we learn the topic assignments and MLE priors $\hat{\Theta}$ and $\hat{\Phi}$. At test-time we disregard the target taxon, assuming it is falsely-missing. To address this we consider the topics excluding $v^\star$ as the maximum likelihood of the Dirichlet over the other $V-1$ taxa. In other words, at test time we use topics which ignore the missing taxon:
+Then given this training set, we learn the topic assignments and MLE priors $\hat{\Theta}$ and $\hat{\Phi}$. At test-time we disregard the target taxon, assuming it is falsely-missing. To address this we consider the topics excluding $v^\star$ as the maximum likelihood of the Dirichlet posterior over the other $V-1$ taxa. In other words, at test time we use topics which ignore the missing taxon:
 \begin{equation}
 P(w = v | z = k, \boldsymbol{w}) \approx \hat{\Phi}_k^{-v^\star} \triangleq \frac{N^{w_i}_k + \beta}{\sum_{u \neq v^\star} N^u_k + \beta},
 \end{equation}
 
-Next, we obtain topic assignments $\boldsymbol{z_{- v^\star}}$ by substituting $\hat{\Phi}_k^{- v^\star}$ for $\Phi$ in the predictive distribution Eqn.~\ref{eqn:posterior}. In the iterative process of sampling topic assignments, we fix $\hat{\Phi}_k^{-v^\star}$, and only update topic assignments for new observations based using the `target defficient' topic assignment counts. These define the approximate MLE topic priors $\check{\Theta}_{g(x)}$. Finally, we estimate the proportion of the data which would have been made of the target class using the original MLE topic matrix
+Next, we obtain topic assignments $\boldsymbol{z_{- v^\star}}$ by substituting $\hat{\Phi}_k^{- v^\star}$ for $\Phi$ in the predictive distribution Eqn.~\ref{eqn:posterior}. In the iterative process of sampling topic assignments, we fix $\hat{\Phi}_k^{-v^\star}$, and only update topic assignments for \emph{new} observations based using the `target defficient' topic assignment counts. These define the approximate MLE topic priors $\check{\Theta}_{g(x)}$. Finally, we estimate the proportion of the data which would have been made of the target class using the original MLE topic matrix
 \begin{equation}
-P(w_x = v^\star) = \sum_{k=0}^K \check{\Theta}_{g(x),k} \hat{\Phi}_{k,v^\star}
+P(w_x = v^\star | \mathbf{w}_{-v^\star}) \approx \sum_{k=0}^K \check{\Theta}_{g(x),k} \hat{\Phi}_{k,v^\star}
 \end{equation}
 
 \subsection{US Atlantic coast hotspot prediction experiment}
@@ -284,7 +266,7 @@ To evaluate our results we compare the held-out locations in the test set (Fig.~
 
 Varying $\tau$ for each strategy and parameter setting we can count the true positive, true negative, false positive, and false negative hotspot predictions compared to the top 50 examples in the held-out data. These counts give the precision and recall for each parameter choice, for each $v^\star$. We also accumulate these counts across all $v^\star$ to compute the overall precision and recall for each choice of parameters. We assign each set of parameters a score given by the area under its aggregated precision-recall curve and select the parameter set with the maximum score for further comparisons. For the interleaved experiment, best performance was achieved with $\alpha=0.1, \beta=0.1, \gamma=10^{-5}, \sigma=25 km$ and for the split experiment, $\alpha=0.1, \beta=1.0, \gamma=10^{-5},\sigma=35 km$. We chose the number of centroids for the k-means strategy to be the same as the number of topics in the best performing topic model, $K=9$ for the interleaved experiment, and $K=6$ for the split experiment.
 
-We compare the aggregated and individual class precision-recall curves for the best parameters for each strategy (Fig.~\ref{fig:plankton-pisces-pr}). From the aggregated precision-recall curves, we find that our model significantly outperforms the exhaustive nearest-neighbor and the k-means strategies on the split-samples regime, especially for low recall requirements. This indicates that the top few predictions of our model were more likely to be true hotspots than those of the other strategies. The exhaustive nearest-neighbor strategy barely performs better than random guessing on the split regime, yet it performs extremely well on the interleaved regime. This result is expected as the exhaustive strategy does not reason at all about the underlying association between plankton types. Instead, it depends on having observed a training point whose distribution is similar to every test point. In contrast, our model performs nearly as well on the split regime as the interleaved regime.
+We compare the aggregated and individual class precision-recall curves for the best parameters for each strategy (Fig.~\ref{fig:plankton-pisces-pr}). From the aggregated precision-recall curves, we find that our model significantly outperforms the exhaustive nearest-neighbor and the k-means strategies on the split-samples regime, especially when the required precision is high. This indicates that the top few predictions of our model were more likely to be true hotspots than those of the other strategies. The exhaustive nearest-neighbor strategy barely performs better than random guessing on the split regime, yet it performs extremely well on the interleaved regime. This result is expected as the exhaustive strategy does not reason at all about the underlying association between plankton types. Instead, it depends on having observed a training point whose distribution is similar to every test point. In contrast, our model performs nearly as well on the split regime as the interleaved regime.
 
 Our model also outperforms the k-means strategy on the split-samples regime. Note that the k-means strategy is exactly equivalent to the exhaustive search strategy in the limit where $K$ is the number of training points. Both these strategies rely on a distance measure over the class distributions. The high dimensionality of the distributions acts to the detriment of the divergence measure. As the dimensionality of a space increases, the discriminating power of distance metrics within that space decreases. The amount of data needed to find meaningful clusters grows exponentially with the number of dimensions, a phenomenon sometimes called \textit{the curse of dimensionality}. As a result, the two search-based strategies perform well when test points are very near to training points in taxon distribution space, but when test points are further away, a distance measure is less informative and performance is negatively impacted.
 
@@ -315,7 +297,9 @@ Our model also outperforms the k-means strategy on the split-samples regime. Not
     \caption
     {Precision vs recall curves for the community model on each of 8 held-out taxa.
 	 \protect\subref{fig:plankton-pisces-pr8}, \protect\subref{fig:plankton-pisces-pr8s} Interleaved train and test data.
-	 \protect\subref{fig:plankton-pisces-pr1}, \protect\subref{fig:plankton-pisces-pr1s} Disjoint train and test data.
+	 \protect\subref{fig:plankton-pisces-pr1}, \protect\subref{fig:plankton-pisces-pr1s} Split train and test data.
     }
     \label{fig:plankton-pisces-pr}
 \end{figure}
+
+\todo[inline]{Need another sentence or two to wrap up the chapter}

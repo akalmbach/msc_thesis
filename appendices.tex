@@ -17,7 +17,10 @@
   $N_{g(x)}^k$ & Number of times topic $k$ was used in neighborhood $g(x)$ \\
   $N_k^v$ & Number of times topic $k$ was used for word $v$ \\
   $N_{\cdot,-i}^\cdot$ & Count as above, but excluding the $i$-th datapoint\\
-  $\sigma$ & The softmax function where the $i$-th dimension $\sigma(x)_i = {e^{x_i}} / \sum_j e^{x_j}$
+  $\sigma$ & The softmax function where the $i$-th dimension $\sigma(x)_i = {e^{x_i}} / \sum_j e^{x_j}$ \\
+  $H[X]$ & Entropy of the random variable $X$, i.e. $mathbb{E}[-\log P(x)]$ \\
+  $D_{KL}[X,Y]$ & KL-Divergence (information gain) of random variables $X$ and $Y$, only defined if both share a support set, i.e. $mathbb{E}_P \left[\log P(x) - \log P(y) \right]$ \\
+  $MI[X,Y]$ & Mutual information between random variables $X, Y$, i.e. $\mathcal{E}_X mathcal{E}_Y P(x,y) \log\left(\frac{P(x,y)}{P(x)P(Y)}\right)$
 \end{tabular}\\
 
 \chapter{Categorical Information Boost Autoencoder Architecture Details} \label{ch:cibae-arch}
@@ -46,7 +49,7 @@ CIB_AE(
 )
 \end{lstlisting}
 
-In our experiments we found that the single Dropout layer before the Softmax in the encoder was crucial. Without dropout, the encodings become overly sensitive to differences in the input images, and approximate encodings through our topic model and topic mapping algorithms are too different from real encodings to produce reasonable results.
+In our experiments we found that the single Dropout layer before the Softmax in the encoder was crucial. Without dropout, the encodings become overly sensitive to differences in the input images, and approximate encodings through our topic model and topic mapping algorithms are too different from real encodings to produce reasonable predictions.
 
 \begin{figure}
     \begin{center}
@@ -60,7 +63,7 @@ In our experiments we found that the single Dropout layer before the Softmax in 
     }
     \end{center}
     \caption{
-    \protect\subref{fig:DownConvMod} DownConv and \protect\subref{fig:UpConvMod} UpConv modules used in our architecture. nci stands for number of channels in, nco number of channels out, and s the spatial resolution of the input representation. In our model, $nco = 2 nci$ for DownConvModules and $nco = nci/2$ for UpConvModules. Each block is made of a sequence of convolution, batch norm, nonlinear activation blocks. The last convolution of the UpConvModule does not include the batch norm and nonlinearities because the training images are standardized (\emph{ie.} pixel values can be both negative and positive).
+    \protect\subref{fig:DownConvMod} DownConv and \protect\subref{fig:UpConvMod} UpConv modules used in our architecture. nci stands for number of channels in, nco number of channels out, and s the spatial resolution of the input representation. In our model, $nco = 2 nci$ for DownConvModules and $nco = nci/2$ for UpConvModules. Each block is made of a sequence of convolution, batch norm, and nonlinear activation blocks. The last convolution of the UpConvModule does not include the batch norm and nonlinearities because the training images are standardized (i.e. pixel values can be both negative and positive).
     }
     \label{fig:cib-ae_modules}
 \end{figure}
