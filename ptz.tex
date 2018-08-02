@@ -30,8 +30,8 @@ In order to learn a representation compatible with topic modelling, we develop a
         \label{fig:words-top}
     }
     \caption{CIB-AE decodings of single `words', i.e. one-hot encoding vectors. An image is reconstructed as a normalized word-histogram.
-             \protect\subref{fig:words-spatial} 512 words are nearly duplicated at $4 \times 4$ positions within the image.
-             \protect\subref{fig:words-top} The 128 most common words (shown in their center position).}
+             \protect\subref{fig:words-spatial} Each word is duplicated at $4 \times 4$ spatial locations within a $128 \times 128$ input image.
+             \protect\subref{fig:words-top} The top 128 most common words from the training set, at their central position.}
     \label{fig:cibae-words}
 \end{figure}
 
@@ -281,8 +281,6 @@ Fig.~\ref{fig:encoding-obs-strip} shows examples of the autoencoding performance
 
 Fig.~\ref{fig:vs_vqvae} shows the RMSE for observed and predicted topic priors decoded as images compared to the real images at the corresponding views. The low extent of the CAE whisker reveals that the conservative collapsed strategy of consistently predicting uniform grayish images is not necessarily bad in terms of pure pixel error, drawing out an important flaw of the pixel error as a performance measure at this level of compression. Nevertheless, to the extent that the RMSE distributions measure performance in our view prediction task, the data confirm our qualitative assesment that our method performs approximately as well as the VQ-VAE on average, and the extent of its typical errors is lower. Further, the more colorful, highher contrast images produced by our method are reflected by its higher variance than the more conservative VQ-VAE approach which tends to encode roughly the right shape, but obscure much of the color and texture.
 
-\todo[inline]{Need more discussion here?}
-
 \begin{figure}
     \begin{center}
     \subfloat[]{
@@ -302,7 +300,7 @@ Fig.~\ref{fig:vs_vqvae} shows the RMSE for observed and predicted topic priors d
 \end{figure}
 
 \subsection{Visual topic-mixture search}
-A second outcome of our work is a tool for exploring views in an environment through mixtures of topics. By directly decoding the topics, we are able to visually present a summary of the scene. Then, by providing an interface to specify a mixture of these topics, and performing a search within the topic-prior map, we enable a unique interaction that enables a user to visually explore an environment, as well as the information encoded by the topic model and the topic-prior map.
+A second outcome of our work is a tool for exploring views in an environment through mixtures of topics. By directly decoding the topics, we are able to visually present a summary of the scene. Then, by providing an interface to specify a mixture of these topics, and performing a search within the topic-prior map, we enable a unique interaction that enables a user to visually explore an environment, as well as the information encoded by the topic model and the topic-prior map (See Fig.~\ref{fig:interaction}).
 
 \begin{figure}
     \centering
