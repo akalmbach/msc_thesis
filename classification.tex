@@ -5,11 +5,11 @@ Our first two example applications explore the most direct connection to the exi
 
 \section{Substrate Classification from Repurposed Dive Videos} \label{sec:substrate}
 
-\todo[inline]{Reduce the intro to this section?}
+\todo[inline]{Reduce the intro to this section?}\todo[inline]{I don't understand what you mean by "reduce", but this all ready pretty well to me as-is.}]
 % \subsubsection{The need for soft substrate classifications from poor data}
 % Paragraph: Why substrate classification matters
 Substrate classification, the task of creating a spatial description of the nature of the seabed, is a fundamental factor in many aspects of ocean research.
-Domain research in marine biology, physical oceanography and geology -- including classifying benthic habitat, modelling deep-sea circulation and analyzing tectonic motion depends on accurate classification of substrate.
+Domain research in marine biology, physical oceanography and geology -- including classifying benthic \todo[inline]{say "(deep sea)" as well, this first time, for the CS person who doesn't recall what "benthic" means.} habitat, modelling deep-sea circulation and analyzing tectonic motion depends on accurate classification of substrate.
 
 % Paragraph: Can't get enough hand labels
 In the context of the deep sea, basic questions remain unanswered about what terrain can be found, particularly in geologically diverse mid-ocean ridge environments. High exploration cost and difficulty of sampling drive the need for remote sensing options for data acquisition, including visual and acoustic surveys, which in turn generate large volumes of data requiring analysis.
@@ -88,7 +88,8 @@ Dive logs contain navigation data collected by an ultra-short baseline (USBL) ac
 % 2 Paragraph: Image + feature filtering
 In addition to ensuring that the training data comes only from potentially relevant locations, we must also ensure that the features encode the relevant aspects of the images.
 Most images in the survey videos contain strong brightness variation at a low spatial frequency due to hard directional lighting and not the shape or texture of the substrate. Typical frames contain a well-lit foreground in the bottom middle and darker regions elsewhere. Due to marine snow and sediment, many images also contain particulate noise.
-As perspective and other conditions change, these factors vary. To mitigate this, we apply a 2D Gaussian bandpass filter with kernel
+As perspective and other conditions change, these factors vary. To mitigate this,\todo[inline]{What is "this"}? we apply a 2D Gaussian bandpass filter with kernel
+\todo{I suggest saying, to reduce the visual impact of the irrelevant, but ubiquitous, particular matter that is manifested as high-frequency image content, we use a bandpass filter"}
 \begin{equation}
 K = (1-e^{-(x^2+y^2)/2f_{low}^2}) \times e^{-(x^2+y^2)/2f_{high}^2}
 \end{equation} 
@@ -220,10 +221,13 @@ Finally, in Fig.~\ref{fig:substrate-topic-map} we present the map of high-level 
 Our second example application of spatio-temporal topic models highlights the versatility of the model, operating on features from ambient audio. To the best of our knowledge, this is the first application of topic models to environmental audio that takes advantage of spatially coherent semantic regions. Our ability to consider temporal dependencies is crucial for this application as sound is fundamentally linked to temporal variation.
 
 In this work we consider how to identify similar world regions by modelling the statistics of ambient sounds. We hypothesize that transitions in acoustic space correlate with transitions in other characteristic properties of the environment. Therefore, we aim to use the ambient sound to identify particular places and detect when we have returned to places we have already visited. In the context of robotics, we envision this system as one of many inputs to a filter-based probabilistic localization system. Common sensors such as range-finders and cameras often produce precise location hypotheses, but they are also susceptible to ambiguities which give rise to multi-modal beliefs. In contrast, an ambient-sound based localization system would give relatively imprecise hypotheses, only identifying the high-level region rather than an exact pose. However ambiguities in the soundscape of an environment are potentially very different from keypoint or corner ambiguities which confuse traditional sensing modalities. As a result, even such `weak' loop closures from sound could help improve the performance of localization systems.
+\todo{Ambiguities... however ...}
 
 Similar to the substrate classification example, in this work, an agent traverses the environment, makes observations along the way, and seeks to produce an intuitive description of these observations. As with substrate classification, an intuitive account is one that describes the world in terms of a few types, where neighboring locations should be assigned to the same type most of the time. Our spatio-temporal topic modelling framework aims to exploit this intuition to learn an appropriate representation without using any ground-truth labelling.
 
 As we are interested in an input to a localization system, in this example the topic model features temporal smoothness rather than spatio-temporal, and observations are not accompanied by their position in the world. In addition, this system is designed to be fully unsupervised. That is, rather than matching topics with labels from a small training set, in this work we allow the topics to describe the data in whatever way represents it most accurately, and aim to extract information by comparing topic priors for different temporal neighborhoods to one-another directly.
+
+\todo{Would be really nice to have a picture of the physical system (husky) and/or local region at ground level. Do you have either? Not critical, of course.} 
 
 \subsection{Acoustic Features}
 In the previous example we have seen the importance of carefully designing a feature function. For this example, we must take a short window of ambient audio and turn it into a discrete-valued feature. We extract such a feature using a k-means codebook of Mel Frequency Cepstral Coefficients (MFCC).
@@ -388,3 +392,5 @@ In both datasets, the temporally smoothed topic-based region labels outperformed
     \caption{Best accuracy of unsupervised same place recognition from ambient sound.}
     \label{tab:audio-results-summary}
 \end{table}
+
+\todo{really nice. bravo!}

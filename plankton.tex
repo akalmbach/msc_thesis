@@ -30,6 +30,7 @@ Marine scientists have long used techniques to measure the amount of chlorophyll
 }
 \label{fig:ifcb}
 \end{figure}
+\todo{Any attribution needed here (I think so). Any copyright issue?}
 
 To meet the gap in observational capability that includes taxonomic resolution, Sosik and Olson have developed the automated, submersible Imaging FlowCytobot (IFCB, Fig.~\ref{fig:ifcb-device})~\citep{Olson2007a}. IFCB acts as an autonomous underwater microscope, collecting water samples and imaging small droplets at high resolution ($\sim$\SI{1}{\micro\meter}). The coupled analysis system \citep{Sosik2007} is able to detect and crop phytoplankton within these images (See Fig.~\ref{fig:ifcb-collage}). Many of these contain sufficient detail to be automatically classified to the genus or species level by a random-forest based system \citep{Sosik2016}. IFCB is designed to serially sample ocean water and perform detection and classification for long periods of time (weeks to years) with minimal manual intervention.
 
@@ -186,6 +187,7 @@ Another outcome of our experiment is the communities themselves learned by our m
     }
     \label{fig:plankton-mvco-supplemental}
 \end{figure}
+\todo{Can you make these bigger? Use a full page?}
 
 Our community model takes a complex, high-dimensional population dataset, and offers immediate questions to pursue related to the ecology of specific taxa near MVCO. For instance, in Fig.~\ref{fig:plankton-mvco-theta-stacked} we see that community 4 begins to appear a little earlier each year from 2011, at first appearing only in the spring, and by 2015 persisting throughout the Winter. If we were to only look at the timeseries for the individual taxa, ``mix\_elongated'', ``Guinardia'', and ``Cylindrotheca'' which dominate community 4, this pattern is not obvious at all (See Ground-Truth, Fig.~\ref{fig:plankton-mvco-timeseries}). However, our model highlights that these taxa often co-occur, and that the pattern of co-occurrence shifts over the years.
 
@@ -216,6 +218,7 @@ We demonstrate this approach with IFCB classification results from NOAA's Fall 2
 	\caption{Summary of data recorded during the Pisces 14-05 cruise. Left, color shows progress in time. Right, color shows the number of plankton observed at each sample location.}
 	\label{fig:plankton-pisces-summary-in}
 \end{figure}
+\todo{Maybe point out explicitly that scales are different? Maybe.}
 
 We divide the sample locations into equal-sized parts, representing the training and test phases of the simulated mission. The counts of all 47 taxa were kept in the training set and used to learn the topic model. For the test set, we held out each of the 8 most-frequently observed phytoplankton taxa one at a time. We define the hotspots of
 a taxon to be the top 50 sample locations in the test data, where the relative abundance of the taxon to all other taxa was highest. The 8 tested taxa make up just over 81\% of all the observations in the dataset. The most common taxa are miscellaneous centric diatom chains (``mix\_elongated''), mixed species of pennate diatoms, \emph{Thalassiosira} spp., \emph{Guinardia delicatula, Guinardia striata, Dictyocha} spp., \emph{Ephemera} spp., and \emph{Phaeocystis} spp. While our method accounts for the sparsity of taxon distributions, this dataset also features sparsity in terms of the locations of observations. To address this separate issue, we resort to a 2D spatial median filter. Finally, we apply a threshold to identify the hotspot locations.
@@ -303,3 +306,4 @@ Our model also outperforms the k-means strategy on the split-samples regime. Not
 \end{figure}
 
 \todo[inline]{Need another sentence or two to wrap up the chapter}
+\todo[inline]{No argument, but the chapter is also nice. --gd}
