@@ -30,6 +30,7 @@ Marine scientists have long used techniques to measure the amount of chlorophyll
 }
 \label{fig:ifcb}
 \end{figure}
+\todo[inline]{Any attribution needed here (I think so). Any copyright issue?}
 
 To meet the gap in observational capability that includes taxonomic resolution, Sosik and Olson have developed the automated, submersible Imaging FlowCytobot (IFCB, Fig.~\ref{fig:ifcb-device})~\citep{Olson2007a}. IFCB acts as an autonomous underwater microscope, collecting water samples and imaging small droplets at high resolution ($\sim$\SI{1}{\micro\meter}). The coupled analysis system \citep{Sosik2007} is able to detect and crop phytoplankton within these images (See Fig.~\ref{fig:ifcb-collage}). Many of these contain sufficient detail to be automatically classified to the genus or species level by a random-forest based system \citep{Sosik2016}. IFCB is designed to serially sample ocean water and perform detection and classification for long periods of time (weeks to years) with minimal manual intervention.
 
@@ -171,11 +172,11 @@ Another outcome of our experiment is the communities themselves learned by our m
 \begin{figure}
     \begin{center}
         \subfloat[]{
-            \includegraphics[width=0.49\columnwidth]{figures/oceans/LogPhi.png}
+            \includegraphics[width=0.9\columnwidth]{figures/oceans/LogPhi.png}
             \label{fig:plankton-mvco-phi}
-        }%
+        }\\
         \subfloat[]{
-            \includegraphics[width=0.49\columnwidth]{figures/oceans/weights.png}
+            \includegraphics[width=0.8\columnwidth]{figures/oceans/weights.png}
             \label{fig:plankton-mvco-weights}
         }
     \end{center}
@@ -213,9 +214,10 @@ We demonstrate this approach with IFCB classification results from NOAA's Fall 2
 \begin{figure}
 	\centering
 	\includegraphics[width=0.75\textwidth]{figures/icra_plankton/n_plankton.png}
-	\caption{Summary of data recorded during the Pisces 14-05 cruise. Left, color shows progress in time. Right, color shows the number of plankton observed at each sample location.}
+	\caption{Summary of data recorded during the Pisces 14-05 cruise. Left, color-scale shows progress in time. Right, color-scale shows the number of plankton observed at each sample location (log scaled).}
 	\label{fig:plankton-pisces-summary-in}
 \end{figure}
+% \todo[inline]{Maybe point out explicitly that scales are different? Maybe.}
 
 We divide the sample locations into equal-sized parts, representing the training and test phases of the simulated mission. The counts of all 47 taxa were kept in the training set and used to learn the topic model. For the test set, we held out each of the 8 most-frequently observed phytoplankton taxa one at a time. We define the hotspots of
 a taxon to be the top 50 sample locations in the test data, where the relative abundance of the taxon to all other taxa was highest. The 8 tested taxa make up just over 81\% of all the observations in the dataset. The most common taxa are miscellaneous centric diatom chains (``mix\_elongated''), mixed species of pennate diatoms, \emph{Thalassiosira} spp., \emph{Guinardia delicatula, Guinardia striata, Dictyocha} spp., \emph{Ephemera} spp., and \emph{Phaeocystis} spp. While our method accounts for the sparsity of taxon distributions, this dataset also features sparsity in terms of the locations of observations. To address this separate issue, we resort to a 2D spatial median filter. Finally, we apply a threshold to identify the hotspot locations.
@@ -302,4 +304,5 @@ Our model also outperforms the k-means strategy on the split-samples regime. Not
     \label{fig:plankton-pisces-pr}
 \end{figure}
 
-\todo[inline]{Need another sentence or two to wrap up the chapter}
+% \todo[inline]{Need another sentence or two to wrap up the chapter}
+% \todo[inline]{No argument, but the chapter is also nice. --gd}
