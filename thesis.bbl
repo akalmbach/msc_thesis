@@ -83,6 +83,15 @@ Chen, X., D.~P. Kingma, T.~Salimans, Y.~Duan, P.~Dhariwal, J.~Schulman,
 \newblock {\em CoRR\/}~{\em abs/1611.02731}.
 
 
+\bibitem[\protect\citeauthoryear{Deerwester, Dumais, Furnas, Landauer, and
+  Harshman}{Deerwester et~al.}{1990}]{Deerwester90indexingby}
+Deerwester, S., S.~T. Dumais, G.~W. Furnas, T.~K. Landauer, and R.~Harshman
+  (1990).
+\newblock Indexing by latent semantic analysis.
+\newblock {\em JOURNAL OF THE AMERICAN SOCIETY FOR INFORMATION SCIENCE\/}~{\em
+  41\/}(6), 391--407.
+
+
 \bibitem[\protect\citeauthoryear{{Department of Fisheries and Oceans
   Canada}}{{Department of Fisheries and Oceans
   Canada}}{2009}]{endeavourMPAPlan}
@@ -175,18 +184,11 @@ Guestrin, C., A.~Krause, and A.~P. Singh (2005).
 \newblock In {\em Proceedings of the 22nd international conference on Machine
   learning}, pp.\  265--272. ACM.
 
-\bibitem[\protect\citeauthoryear{Hofmann}{Hofmann}{2000}]{Hofmann2000}
-Hofmann, T. (2000).
-\newblock Learning the similarity of documents: An information-geometric
-  approach to document retrieval and categorization.
-\newblock In S.~A. Solla, T.~K. Leen, and K.~M\"{u}ller (Eds.), {\em Advances
-  in Neural Information Processing Systems 12}, pp.\  914--920. MIT Press.
-
-\bibitem[\protect\citeauthoryear{Hofmann}{Hofmann}{2001}]{Hofmann2001}
-Hofmann, T. (2001, Jan).
-\newblock Unsupervised learning by probabilistic latent semantic analysis.
-\newblock {\em Machine Learning\/}~{\em 42\/}(1), 177--196.
-
+\bibitem[\protect\citeauthoryear{Hofmann}{Hofmann}{1999}]{hofmann1999plsa}
+Hofmann, T. (1999).
+\newblock Probabilistic latent semantic analysis.
+\newblock In {\em Proceedings of the Fifteenth conference on Uncertainty in
+  artificial intelligence}, pp.\  289--296. Morgan Kaufmann Publishers Inc.
 
 \bibitem[\protect\citeauthoryear{Jayaraman and Grauman}{Jayaraman and
   Grauman}{2018}]{Jayaraman2017}
@@ -374,6 +376,12 @@ Sosik, H.~M. and R.~J. Olson (2007, jun).
   imaging-in-flow cytometry}.
 \newblock {\em Limnology and Oceanography: Methods\/}~{\em 5\/}(6), 204--216.
 
+
+\bibitem[\protect\citeauthoryear{Sosik, Peacock, and Brownlee}{Sosik
+  et~al.}{2014}]{SosikDataset}
+Sosik, H.~M., E.~E. Peacock, and E.~F. Brownlee (2014).
+\newblock Whoi plankton dataset -- annotated plankton images.
+\newblock \url{https://hdl.handle.net/10.1575/1912/7341}.
 
 \bibitem[\protect\citeauthoryear{Srivastava and Sutton}{Srivastava and
   Sutton}{2017}]{srivastava2017autoencoding}

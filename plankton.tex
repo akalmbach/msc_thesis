@@ -2,7 +2,7 @@
 
 \chapter{Combining topics and domain expertise to develop insight into plankton ecology} \label{ch:plankton}
 
-As we have seen, the spatio-temporal topic model is a powerful model for unsupervised classification of location specific data, and by carefully defining a feature function, we can achieve intuitive classifications that match human semantic annotations. However, our interpretation of the model's outputs has thus far been somewhat straightforward. In this chapter, we delve deeper into how topic models can be used for tasks beyond classification.
+As we have seen, the spatio-temporal topic model is a powerful model for unsupervised classification of location specific data, and by carefully defining a feature function, we can achieve intuitive classifications that match human semantic annotations. Our interpretation of the model's outputs, however, has thus far been somewhat straightforward. In this chapter, we delve deeper into how topic models can be used for tasks beyond classification.
 
 A key feature of the spatio-temporal topic model is that it excels at finding co-occurrences in data that can be explained by the region in which each observation occurred. In addition to leading to appealing maps, this property means that topic distributions are often easier to predict accurately than other non-smooth representations of a dataset. Further, given a predicted topic distribution and the topics themselves, the maximum likelihood feature distribution is trivial to produce.
 
@@ -25,12 +25,12 @@ Marine scientists have long used techniques to measure the amount of chlorophyll
 }
 \end{center}
 \caption{
-\protect\subref{fig:ifcb-device} Imaging FlowCyto Bot (IFCB) being deployed at Martha's Vineyard, MA.
-\protect\subref{fig:ifcb-collage} Example phytoplankton detections from IFCB.
+\protect\subref{fig:ifcb-device} Imaging FlowCyto Bot (IFCB) being deployed at Martha's Vineyard, MA (img. cred: T. Crockford).
+\protect\subref{fig:ifcb-collage} Example phytoplankton detections from the Martha's Vineyard IFCB dataset \citep{SosikDataset}. \url{https://ifcb-data.whoi.edu/about} offers an informal introduction to phytoplankton ecology and IFCB.
 }
 \label{fig:ifcb}
 \end{figure}
-\todo[inline]{Any attribution needed here (I think so). Any copyright issue?}
+% \todo[inline]{Any attribution needed here (I think so). Any copyright issue?}
 
 To meet the gap in observational capability that includes taxonomic resolution, Sosik and Olson have developed the automated, submersible Imaging FlowCytobot (IFCB, Fig.~\ref{fig:ifcb-device})~\citep{Olson2007a}. IFCB acts as an autonomous underwater microscope, collecting water samples and imaging small droplets at high resolution ($\sim$\SI{1}{\micro\meter}). The coupled analysis system \citep{Sosik2007} is able to detect and crop phytoplankton within these images (See Fig.~\ref{fig:ifcb-collage}). Many of these contain sufficient detail to be automatically classified to the genus or species level by a random-forest based system \citep{Sosik2016}. IFCB is designed to serially sample ocean water and perform detection and classification for long periods of time (weeks to years) with minimal manual intervention.
 
@@ -188,7 +188,7 @@ Another outcome of our experiment is the communities themselves learned by our m
     \label{fig:plankton-mvco-supplemental}
 \end{figure}
 
-Our community model takes a complex, high-dimensional population dataset, and offers immediate questions to pursue related to the ecology of specific taxa near MVCO. For instance, in Fig.~\ref{fig:plankton-mvco-theta-stacked} we see that community 4 begins to appear a little earlier each year from 2011, at first appearing only in the spring, and by 2015 persisting throughout the Winter. If we were to only look at the timeseries for the individual taxa, ``mix\_elongated'', ``Guinardia'', and ``Cylindrotheca'' which dominate community 4, this pattern is not obvious at all (See Ground-Truth, Fig.~\ref{fig:plankton-mvco-timeseries}). However, our model highlights that these taxa often co-occur, and that the pattern of co-occurrence shifts over the years.
+Our community model takes a complex, high-dimensional population dataset, and offers immediate questions to pursue related to the ecology of specific taxa near MVCO. For instance, in Fig.~\ref{fig:plankton-mvco-theta-stacked} we see that community 4 begins to appear a little earlier each year from 2011, at first appearing only in the spring, and by 2015 persisting throughout the Winter. If we were to only look at the timeseries for the individual taxa, ``mix\_elongated'', ``Guinardia'', and ``Cylindrotheca'' which dominate community 4, this pattern is not obvious at all (See Ground-Truth, Fig.~\ref{fig:plankton-mvco-timeseries}). Our model, however, highlights that these taxa often co-occur, and that the pattern of co-occurrence shifts over the years.
 
 \section{Predicting presence of missing phytoplankton by their associates} \label{sec:plankton-spatial-search}
 In our second study of IFCB plankton data, we ground our community model by its ability to predict the presence of an artificially held-out plankton taxon from the others, rather than predicting the full distribution from auxillary data \citep{Kalmbach2017a}. Further, in this application we explore spatial phytoplankton classification data, demonstrating our model's ability to capture both the temporal and spatial smoothness aspects of community structure.
