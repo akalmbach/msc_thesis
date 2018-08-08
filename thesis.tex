@@ -88,6 +88,33 @@ This thesis considers learning unsupervised representations that facilitate unde
 \listoftables %
 \listoffigures %
 
+\begin{center}
+LIST OF SYMBOLS\\
+\begin{tabular}{cp{\textwidth}}
+  $x$ & Location, spatial or spatio-temporal \\
+  $w$ & Word, an instance of a discrete-valued feature ($\textbf{w}$, all words) \\
+  $z$ & Topic assignment ($\textbf{z}$, all topic assignments) \\
+  $g(x)$ & The neighborhood of location $x$ \\
+  $g$ & Parameter controlling neighborhood size \\
+  $\theta$, $\theta_{g(x)}$ & Topic prior for one neighborhood ($\Theta$, all topic priors)\\
+  $\phi$, $\phi_k$ & Word distribution for one topic ($\Phi$, all topics) \\
+  $\alpha$ & Parameter of symmetric Dirichlet prior on $\theta$ \\
+  $\beta$ & Parameter of symmetric Dirichlet prior on $\phi$ \\
+  $K$ & Number of topics \\
+  $V$ & Vocabulary size, number of distinct values of $w$ \\
+  $N_{g(x)}^k$ & Number of times topic $k$ was used in neighborhood $g(x)$ \\
+  $N_k^v$ & Number of times topic $k$ was used for word $v$ \\
+  $N_{\cdot,-i}^\cdot$ & Count as above, but excluding the $i$-th datapoint\\
+  $\sigma$ & The softmax function where the $i$-th dimension $\sigma(x)_i = {e^{x_i}} / \sum_j e^{x_j}$ \\
+  $H[X]$ & Entropy of the random variable $X$: \\
+         & $\mathbb{E}[-\log P(x)]$ \\
+  $D_{KL}[P,Q]$ & KL-Divergence (information gain) of PMFs $P, Q$:\\
+         & $\mathbb{E}_X \left[\log P(x) - \log Q(x) \right]$ \\
+  $MI[X,Y]$ & Mutual information between random variables $X, Y$:\\
+         & $\mathbb{E}_X \left[\mathbb{E}_Y \left[P(x,y) \log\left(\frac{P(x,y)}{P(x)P(y)}\right) \right] \right]$
+\end{tabular}
+\end{center}
+
 \end{romanPagenumber} 
 
 \mainmatter %

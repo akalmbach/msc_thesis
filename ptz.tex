@@ -300,16 +300,31 @@ Fig.~\ref{fig:vs_vqvae} shows the RMSE for observed and predicted topic priors d
 \end{figure}
 
 \subsection{Visual topic-mixture search}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/ptz/interaction.png}
+    \caption{Screenshot of visual topic-mixture search interaction: Counter-clockwise from Top-left: Direct decodings of 25 topics; numbers in each decoded topic indicate the proportion of the target mixture given to that topic. Image of the target-mixture. Sample from the view with the closest topic distribution given by our spatial prediction model: topic div gives the divergence between the predicted encoding and the target encoding. Spatial topic map. Full extent of the possible views. True image at the closest topic distribution. Demo video at \protect\url{http://cim.mcgill.ca/\~akalmbach/thesis/demos.html}}
+    \label{fig:interaction}
+\end{figure}
+
 A second outcome of our work is a tool for exploring views in an environment through mixtures of topics. By directly decoding the topics, we are able to visually present a summary of the scene. Then, by providing an interface to specify a mixture of these topics, and performing a search within the topic-prior map, we enable a unique interaction that enables a user to visually explore an environment, as well as the information encoded by the topic model and the topic-prior map (See Fig.~\ref{fig:interaction}).
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figures/ptz/interaction.png}
-    \caption{Screenshot of visual topic-mixture search interaction: Counter-clockwise from Top-left: Direct decodings of 25 topics; numbers in each decoded topic indicate the proportion of the target mixture given to that topic. Image of the target-mixture. Sample from the view with the closest topic distribution given by our spatial prediction model: topic div gives the divergence between the predicted encoding and the target encoding. Spatial topic map. Full extent of the possible views. True image at the closest topic distribution. Demo video at \url{http://cim.mcgill.ca/~akalmbach/thesis/demos.html}}
-    \label{fig:interaction}
+    \subfloat[][]{
+        \includegraphics[width=\textwidth]{figures/ptz/topic_transitions}
+        \label{fig:interaction-topic-transitions}
+    }\\
+    \subfloat[][]{
+        \includegraphics[width=0.63\textwidth]{figures/ptz/topic_samples}
+        \label{fig:interaction-topic-samples}
+    }
+    \caption{\protect\subref{fig:interaction-topic-transitions} Setting all other topic probabilities to 0, we can visualize the transition between two topics.
+             \protect\subref{fig:interaction-topic-samples} Top left: A target image specified as a mixture of topics. Bottom left: The real image with the closest predicted topic distribution to the target. Right: Multinomial ($N=2000$ words) samples from the predicted word distributions.}
+    \label{fig:interaction-insights}
 \end{figure}
 
-\todo[inline]{One more paragraph in this section?}
+This interface leads us to a few interesting qualitative assesments of the topic model. For instance, in Fig.~\ref{fig:interaction-topic-transitions} we visualize interpolating topic distributions connecting two topics. This experiment confirms that the powerful decoder network is doing more than linearly mixing the topic images as we transition between two topics. Instead, it reveals colored segments of the images gradually changing in shape and intensity. Secondly, in Fig.~\ref{fig:interaction-topic-samples}, we visualize a predicted word distribution, as well samples of the multinomial defined by that distribution. Recall that to train our model we resorted to discretizing the feature distribution in the same way, using a fixed number of samples from the word distribution. These samples are thus more akin to the training data our topic model sees. Further, they illustrate the true diversity of view predictions implied by our model. Each individual sample features slightly different shapes compared to eachother and compared to the prediction based on the mean word distribution. Further, the samples often contain more intense colors while being less smooth than the mean.
 
 \section{Discussion}
 

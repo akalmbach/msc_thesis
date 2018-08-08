@@ -88,7 +88,7 @@ In addition to ensuring that the training data comes only from potentially relev
 Most images in the survey videos contain strong brightness variation at a low spatial frequency due to hard directional lighting and not the shape or texture of the substrate. Typical frames contain a well-lit foreground in the bottom middle and darker regions elsewhere. Due to marine snow and sediment, many images also contain particulate noise.
 To reduce the visual impact of the irrelevant, but ubiquitous spotlight effects manifested as low-frequency image content and particulate matter manifested as high-frequency image content, we use a bandpass filter, with a 2D Gaussian kernel:
 \begin{equation}
-K = (1-e^{-(x^2+y^2)/2f_{low}^2}) \times e^{-(x^2+y^2)/2f_{high}^2}
+K = \left((1-e^{-(x^2+y^2)/2f_{low}^2}\right) \left(e^{-(x^2+y^2)/2f_{high}^2}\right)
 \end{equation} 
 where we set the frequency cutoff parameters $f_{low}$ and $f_{high}$ to be 4 and 100 cycles/image respectively based on the approximate minimum and maximum size of relevant substrate features. While particulate noise was a detrimental factor, we found that the SIFT keypoints lost by smoothing over image details were more detrimental. To compensate, before extracting SIFT features we applied the highpass Guassian filter only. Finally, even with these preprocessing steps, not all features contain enough variation to help distinguish frames, and therefore only contribute noise to the modelling process. The concatenation of all the LBP histograms for an image results in a 10,752 dimensional histogram. We found that keeping only the $V = 3000$ bins with highest variance greatly reduced inference time for our topic model while slightly improving classification performance.
 
