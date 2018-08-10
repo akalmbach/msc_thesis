@@ -1,0 +1,32 @@
+<!DOCTYPE html> 
+<html> 
+<body> 
+
+<h1>Spatial Awareness for Robot Cameras (Demos)</h1>
+
+In Ch. 5 of my thesis, I discuss using topic models to learn to predict the views a Pan-Tilt-Zoom camera would encounter
+in any configuration. First we pre-train a feature distribution function that encodes images as a distribution of 'words'. Then,
+when the camera is placed in a new location, it looks around at 50 random PTZ views and trains a topic model and a topic map.
+Once the map is trained, the robot camera can predict the topic prior for a view, which in turn defines a word distribution that
+it can sample from and decode into predicted images. Here, we show two unique interactive interfaces that let a user explore the information learned by the robot's model.
+
+<h2> Looking around and sampling the predictive distribution </h2>
+First, we give a user control of the view, and allow them to look around the prediction space, control the resolution of the encoding, and investigate what the camera understands about the world.
+
+<video width="100%" controls>
+  <source src="look.mp4" type="video/mp4">
+  <source src="look.webm" type="video/webm">
+  Your browser does not support HTML5 video.
+</video>
+
+<h2> Topic Mixture Search </h2>
+Second, we give the user control of the topic distribution by mixing together images representing each topic. Then, our model gives back its best match within the scene, and compares it to the real view at that location.
+
+<video width="100%" controls>
+  <source src="search.mp4" type="video/mp4">
+  	<source src="search.webm" type="video/webm">
+  Your browser does not support HTML5 video.
+</video>
+
+</body> 
+</html>

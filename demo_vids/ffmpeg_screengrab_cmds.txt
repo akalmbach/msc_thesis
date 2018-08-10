@@ -1,0 +1,8 @@
+# Record second screen without audio
+ffmpeg -y -r 30 -f x11grab -s 3840x2120 -i :0.0+3840,0 -c:v libx264rgb -crf 0 -preset:v ultrafast out.mkv
+
+# Compress mkv with H264
+ffmpeg -i out.mkv -c:v libx264 -c:a copy -crf 22 -preset slower -vf scale=1920:-1 out.mp4
+
+# Compress H264 with V8
+ffmpeg -i out.mp4 out.webm
