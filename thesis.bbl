@@ -1,5 +1,14 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Bart, Welling, and Perona}{Bart
+  et~al.}{2011}]{bart2011}
+Bart, E., M.~Welling, and P.~Perona (2011, Nov).
+\newblock Unsupervised organization of image collections: Taxonomies and
+  beyond.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine
+  Intelligence\/}~{\em 33\/}(11), 2302--2315.
+
+
 \bibitem[\protect\citeauthoryear{Bengio, Courville, and Vincent}{Bengio
   et~al.}{2013}]{Bengio2013}
 Bengio, Y., A.~Courville, and P.~Vincent (2013, Aug).
@@ -8,10 +17,16 @@ Bengio, Y., A.~Courville, and P.~Vincent (2013, Aug).
   Intelligence\/}~{\em 35\/}(8), 1798--1828.
 
 
-\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{2006}]{BishopCh9}
-Bishop, C. (2006).
+\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{2006a}]{BishopCh9}
+Bishop, C. (2006a).
 \newblock {\em Pattern Recognition and Machine Learning (Information Science
   and Statistics)}, Chapter~9, pp.\  423--460.
+\newblock Berlin, Heidelberg: Springer-Verlag.
+
+\bibitem[\protect\citeauthoryear{Bishop}{Bishop}{2006b}]{BishopCh2}
+Bishop, C. (2006b).
+\newblock {\em Pattern Recognition and Machine Learning (Information Science
+  and Statistics)}, Chapter 2.2, pp.\  74--78.
 \newblock Berlin, Heidelberg: Springer-Verlag.
 
 \bibitem[\protect\citeauthoryear{Bishop}{Bishop}{1999}]{Bishop1999}
@@ -21,6 +36,13 @@ Bishop, C.~M. (1999).
   99\/}~{\em 1999\/}(470), 509--514.
 
 
+\bibitem[\protect\citeauthoryear{Blei, Carin, and Dunson}{Blei
+  et~al.}{2010}]{Blei2010}
+Blei, D., L.~Carin, and D.~Dunson (2010, Nov).
+\newblock Probabilistic topic models.
+\newblock {\em IEEE Signal Processing Magazine\/}~{\em 27\/}(6), 55--65.
+
+
 \bibitem[\protect\citeauthoryear{Blei, Ng, and {and M. Jordan}}{Blei
   et~al.}{2003}]{Blei2003}
 Blei, D., A.~Ng, and {and M. Jordan} (2003).
@@ -28,11 +50,64 @@ Blei, D., A.~Ng, and {and M. Jordan} (2003).
 \newblock {\em Jmlr\/}~{\em 3}, 993--1022.
 
 
+\bibitem[\protect\citeauthoryear{Blei and Jordan}{Blei and
+  Jordan}{2003}]{Blei2003Captions}
+Blei, D.~M. and M.~I. Jordan (2003).
+\newblock Modeling annotated data.
+\newblock In {\em Proceedings of the 26th Annual International ACM SIGIR
+  Conference on Research and Development in Informaion Retrieval}, SIGIR '03,
+  New York, NY, USA, pp.\  127--134. ACM.
+
+\bibitem[\protect\citeauthoryear{Deerwester, Dumais, Furnas, Landauer, and
+  Harshman}{Deerwester et~al.}{1990}]{Deerwester90indexingby}
+Deerwester, S., S.~T. Dumais, G.~W. Furnas, T.~K. Landauer, and R.~Harshman
+  (1990).
+\newblock Indexing by latent semantic analysis.
+\newblock {\em JOURNAL OF THE AMERICAN SOCIETY FOR INFORMATION SCIENCE\/}~{\em
+  41\/}(6), 391--407.
+
+
+\bibitem[\protect\citeauthoryear{Fei-Fei and Perona}{Fei-Fei and
+  Perona}{2005}]{FeiFei2005}
+Fei-Fei, L. and P.~Perona (2005, June).
+\newblock A bayesian hierarchical model for learning natural scene categories.
+\newblock In {\em 2005 IEEE Computer Society Conference on Computer Vision and
+  Pattern Recognition (CVPR'05)}, Volume~2, pp.\  524--531 vol. 2.
+
+\bibitem[\protect\citeauthoryear{Geigle}{Geigle}{2016}]{geigle2016}
+Geigle, C. (2016, October).
+\newblock Inference methods for latent dirichlet allocation.
+\newblock Course notes (cs598cxz advanced topics in information retrieval),
+  Department of Computer Science, University of Illinois at Urbana-Champaign.
+
 \bibitem[\protect\citeauthoryear{Girdhar}{Girdhar}{2014}]{Girdhar2014}
 Girdhar, Y. (2014).
 \newblock {\em {Unsupervised Semantic Perception, Summarization, and Autonomous
   Exploration for Robots in Unstructured Environments}}.
 \newblock Ph.\ D. thesis, McGill University.
+
+\bibitem[\protect\citeauthoryear{Girdhar}{Girdhar}{2016}]{Girdhar2016}
+Girdhar, Y. (2016).
+\newblock {Modeling curiosity in a mobile robot for long-term autonomous
+  exploration and monitoring}.
+\newblock {\em Autonomous Robots\/}~{\em 40\/}(7), 1267--1278.
+
+
+\bibitem[\protect\citeauthoryear{Girdhar and Dudek}{Girdhar and
+  Dudek}{2012}]{Girdhar2012}
+Girdhar, Y. and G.~Dudek (2012).
+\newblock {Efficient on-line data summarization using extremum summaries}.
+\newblock {\em Proceedings - IEEE International Conference on Robotics and
+  Automation\/}, 3490--3496.
+
+
+\bibitem[\protect\citeauthoryear{Girdhar, Whitney, and Dudek}{Girdhar
+  et~al.}{2014}]{Girdhar2014a}
+Girdhar, Y., D.~Whitney, and G.~Dudek (2014).
+\newblock {Curiosity based exploration for learning terrain models}.
+\newblock {\em 2014 IEEE International Conference on Robotics and
+  Automation\/}, 578--584.
+
 
 \bibitem[\protect\citeauthoryear{Goodfellow, Pouget-Abadie, Mirza, Xu,
   Warde-Farley, Ozair, Courville, and Bengio}{Goodfellow
@@ -44,10 +119,53 @@ Goodfellow, I., J.~Pouget-Abadie, M.~Mirza, B.~Xu, D.~Warde-Farley, S.~Ozair,
   Weinberger (Eds.), {\em Advances in Neural Information Processing Systems
   27}, pp.\  2672--2680. Curran Associates, Inc.
 
+\bibitem[\protect\citeauthoryear{Griffiths and Steyvers}{Griffiths and
+  Steyvers}{2004}]{griffiths2004}
+Griffiths, T.~L. and M.~Steyvers (2004).
+\newblock Finding scientific topics.
+\newblock {\em Proceedings of the National academy of Sciences\/}~{\em
+  101\/}(suppl 1), 5228--5235.
+
+
+\bibitem[\protect\citeauthoryear{Hofmann}{Hofmann}{1999}]{hofmann1999plsa}
+Hofmann, T. (1999).
+\newblock Probabilistic latent semantic analysis.
+\newblock In {\em Proceedings of the Fifteenth conference on Uncertainty in
+  artificial intelligence}, pp.\  289--296. Morgan Kaufmann Publishers Inc.
+
 \bibitem[\protect\citeauthoryear{Kingma and Welling}{Kingma and
   Welling}{2014}]{Kingma2014}
 Kingma, D.~P. and M.~Welling (2014).
 \newblock {Auto-Encoding Variational Bayes}.
 \newblock In {\em ICLR}, Number~Ml, pp.\  1--14.
+
+\bibitem[\protect\citeauthoryear{Niebles, Wang, and Fei-Fei}{Niebles
+  et~al.}{2008}]{Niebles2008}
+Niebles, J.~C., H.~Wang, and L.~Fei-Fei (2008, Sep).
+\newblock Unsupervised learning of human action categories using
+  spatial-temporal words.
+\newblock {\em International Journal of Computer Vision\/}~{\em 79\/}(3),
+  299--318.
+
+
+\bibitem[\protect\citeauthoryear{Pritchard, Stephens, and Donnelly}{Pritchard
+  et~al.}{2000}]{Pritchard2000}
+Pritchard, J.~K., M.~Stephens, and P.~Donnelly (2000).
+\newblock Inference of population structure using multilocus genotype data.
+\newblock {\em Genetics\/}~{\em 155\/}(2), 945--959.
+
+
+\bibitem[\protect\citeauthoryear{Wallach, Murray, Salakhutdinov, and
+  Mimno}{Wallach et~al.}{2009}]{Wallach2009}
+Wallach, H.~M., I.~Murray, R.~Salakhutdinov, and D.~Mimno (2009).
+\newblock {Evaluation Methods for Topic Models}.
+\newblock {\em International Conference on Machine Learning\/}~(d), 1--8.
+
+
+\bibitem[\protect\citeauthoryear{Zilberstein}{Zilberstein}{1996}]{zilberstein1996anytime}
+Zilberstein, S. (1996).
+\newblock Using anytime algorithms in intelligent systems.
+\newblock {\em AI magazine\/}~{\em 17\/}(3), 73.
+
 
 \end{thebibliography}
