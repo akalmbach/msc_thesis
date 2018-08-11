@@ -1,14 +1,7 @@
 %!TEX root = thesis.tex
 
 \chapter{The Spatio-Temporal Topic Model} \label{ch:topic-models-detail}
-
-\section{Topic Models and Latent Dirichlet Allocation}
-
-% KL-Divergence is a measure of the information lost when approximating one distribution with another, equal 0 if the distributions are identical and $\infty$ if they do not have the same support. If we sample a taxon randomly from the estimated distribution, and that taxon has probabilities $p,~q$ under the estimated and true distributions respectively, the KL-Divergence gives the expected value of $log \frac{p}{q}$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% What is a topic model? %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Topic Models and Latent Dirichlet Allocation} \label{sec:topic-models-topic-models}
 Topic models are a family of probabilistic latent variable model, developed as a tool for document and word classification according to semantic clusters called `topics'. Topic models aim to find word clusters derived solely from word co-occurrence, and are thus suitable for large, unlabelled datasets. For instance, in a corpus of of news articles, a successful topic model might learn that the words `film', `show', `audience', and `actor' form one cluster, and `budget', `market', `plan', and `spending' form another. These natural groupings of words give topic models their name.
 
 Compared to other unsupervised learning methods, a document is treated directly as a collection of many of discrete-valued variables (words), rather than as a single high-dimensional vector. As a result, topic models provide a much more direct way to reason about and place priors on individual observations, ultimately leading to powerful, interpretable representations of document collection datasets.
@@ -31,14 +24,13 @@ Where $\Gamma$ denotes the gamma function.
 	\centering
 	\includegraphics[width=0.91\columnwidth]{figures/beta.png}
 	\caption{
-		PDFs of Dirichlet distributions with 2D symmetric parameters $\alpha$. These can be used as a prior over the 2D PMFs. Note that this means there is $K-1 = 1$ degree of freedom, i.e. this is a prior for a Bernoulli random variable and this case is identical to a $\mathrm{Beta}(\alpha_0, \alpha_1)$ distribution. It is helpful imagine each of these curves as giving a distribution of probabilities for coins from an unfair coin factory, where the average over all coins looks fair, but (for $\alpha \approx 0$) most individual coins are very unfair. For a K-dimensional Dirichlet distribution, the corresponding analogy is a prior for unfair K-sided dice.
+		PDFs of Dirichlet distributions with 2D symmetric parameters $\alpha$. These can be used as a prior over the 2D PMFs. Note that this means there is $K-1 = 1$ degree of freedom, i.e. this is a prior for a Bernoulli random variable and this case is identical to a $\mathrm{Beta}(\alpha, \alpha)$ distribution. It is helpful imagine each of these curves as giving a distribution of probabilities for coins from an unfair coin factory, where the average over all coins looks fair, but (for $\alpha \approx 0$) most individual coins are very unfair. For a K-dimensional Dirichlet distribution, the corresponding analogy is a prior for unfair K-sided dice.
 	}
 	\label{fig:beta-pdf}
 
 \end{figure}
 
 % \todo[inline]{What is gamma? What does alpha mean?  These "obvious" things should be as explicit as possible.}
-
 It has mean $\boldsymbol{\alpha}_i / \sum_i \boldsymbol{\alpha}_i$ and when $\sum_i \boldsymbol{\alpha}_i < 1$ is said to be `sparse', meaning the pdf has most of its mass on the corners of the simplex, and typical samples have few non-zero entries. In the case of LDA, a symmetric Dirichlet prior is chosen, where $\boldsymbol{\alpha}_i = \boldsymbol{\alpha}_j ~~\forall i, j$, and the concentration, $\alpha = \sum_i \boldsymbol{\alpha}_i$, is considered as a hyperparameter. Fig.~\ref{fig:beta-pdf} illustrates the effect of varying $\alpha$. Choosing a symmetric, sparse Dirichlet prior for the topic-word distribution encodes the assumption that few words are strongly associated with a topic, some words are weakly associated with a topic, and most words are not at all associated with a topic without requiring any external information about which individual words are associated with which topics.
 
 The posterior for $\theta$ given observations $z_i \sim Cat(\theta),~i = 1, \ldots n$ can be easily derived using Bayes' rule to be $P(\theta | \boldsymbol{N}) = Dir(\alpha + \boldsymbol{N})$, where $\boldsymbol{N}$ is the vector of counts for each of the $K$ possible values of $z$, and consequently the predictive distribution for $z_{n+1}$ is given by \citep{BishopCh2}:
